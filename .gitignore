@@ -1,0 +1,23 @@
+# ===========================================
+# .gitignore for the SOP Framework Repository
+# ===========================================
+# This is a MINIMAL .gitignore for the framework itself.
+# Project-specific ignores are handled by SOP-002 when 
+# setting up new repositories.
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor/IDE files
+*.swp
+*.swo
+*~
+.idea/
+*.sublime-*
+
+# Keep .vscode/ tracked for recommended extensions
+# but ignore user-specific settings if added later
+.vscode/settings.json
+.vscode/launch.json
