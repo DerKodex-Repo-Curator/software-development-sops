@@ -14,6 +14,7 @@ The AI agent is responsible for **managing the entire session lifecycle**:
 |----------------|------|----------------|
 | **Initialize session** | First prompt | Fill Project Overview, Goals from user description |
 | **Track progress** | After each SOP | Update Progress Tracker status and outputs |
+| **Update checklist** | After each SOP | Check off completed items in `.sops/templates/project-checklist.md` |
 | **Maintain context** | After each SOP | Update Current Session, Session Prompt Template |
 | **Log sessions** | End of session | Add entry to Session Log |
 | **Resume context** | New session | Read AI-SESSION.md, continue from last SOP |
@@ -76,6 +77,7 @@ The AI agent is responsible for **managing the entire session lifecycle**:
 3. **Follow the Procedure** section step-by-step
 4. **Produce all Outputs** listed
 5. **Verify against the Review Checklist**
+6. **Update project-checklist.md** — check off completed items for the SOP
 
 ---
 
