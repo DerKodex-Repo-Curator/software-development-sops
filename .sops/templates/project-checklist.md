@@ -136,6 +136,23 @@
 - [ ] Validation feedback patterns
 - [ ] Submission loading states
 
+### Progressive Web App (SOP-304) — *Optional*
+- [ ] PWA required for this project: ☐ Yes / ☐ No
+- [ ] Service worker configured (Serwist/next-pwa)
+- [ ] Web manifest with icons
+- [ ] Offline caching strategy defined
+- [ ] Mobile UI patterns implemented:
+  - [ ] Bottom navigation
+  - [ ] Touch targets ≥ 48px
+  - [ ] Safe area insets
+- [ ] Native APIs needed:
+  - [ ] Geolocation
+  - [ ] Camera/Barcode
+  - [ ] Push notifications
+  - [ ] Share API
+- [ ] Install prompt handled
+- [ ] Lighthouse PWA score ≥ 90
+
 ---
 
 ## Phase 4: AI Integration (If Applicable)
