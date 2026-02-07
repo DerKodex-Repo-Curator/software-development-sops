@@ -594,3 +594,4 @@ Execute SOP-302 (API Integration):
 - **SOP-200:** API Design (endpoint contracts)
 - **SOP-300:** Component Architecture (component patterns)
 - **SOP-203:** Error Handling (API error format)
+- **SOP-304:** Progressive Web App (offline caching) *(optional)*

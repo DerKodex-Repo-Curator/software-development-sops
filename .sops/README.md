@@ -82,6 +82,7 @@ When copied to a new project, the structure is:
 | [SOP-301](phase-3-frontend/SOP-301-styling-standards.md) | Styling Standards | CSS methodology, design tokens, accessibility |
 | [SOP-302](phase-3-frontend/SOP-302-api-integration.md) | API Integration | Data fetching patterns, caching, optimistic updates |
 | [SOP-303](phase-3-frontend/SOP-303-form-handling.md) | Form Handling | Validation UX, error states, submission flows |
+| [SOP-304](phase-3-frontend/SOP-304-progressive-web-app.md) | Progressive Web App *(Optional)* | PWA setup, offline support, mobile UI, native APIs |
 
 ### Phase 4: AI Integration
 
@@ -198,7 +199,7 @@ Links to related procedures.
 │     [Init]    ──►    [Database] ──►  [Backend] ──►   [Frontend]         │
 │     SOP-000          SOP-100         SOP-200         SOP-300            │
 │     to               to              to              to                 │
-│     SOP-006          SOP-102         SOP-204         SOP-303            │
+│     SOP-006          SOP-102         SOP-204         SOP-304*           │
 │                                                                         │
 │                         │                                               │
 │                         ▼                                               │
