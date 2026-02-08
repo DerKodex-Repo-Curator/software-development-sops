@@ -172,7 +172,7 @@ chore(deps): upgrade Next.js to 14.1
 
 ### 5. Create README.md
 
-```markdown
+````markdown
 # {Project Name}
 
 {One-line description of the project}
@@ -240,11 +240,11 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 ## License
 
 {License type} - see [LICENSE](LICENSE) for details.
-```
+````
 
 ### 6. Create CONTRIBUTING.md
 
-```markdown
+````markdown
 # Contributing to {Project Name}
 
 ## Getting Started
@@ -290,7 +290,7 @@ docs(scope): update documentation
 ## Questions?
 
 Open an issue for questions or discussions.
-```
+````
 
 ### 7. Create Pull Request Template
 

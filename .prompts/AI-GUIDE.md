@@ -15,6 +15,7 @@ The AI agent is responsible for **managing the entire session lifecycle**:
 | **Initialize session** | First prompt | Fill Project Overview, Goals from user description |
 | **Track progress** | After each SOP | Update Progress Tracker status and outputs |
 | **Update checklist** | After each SOP | Check off completed items in `.sops/templates/project-checklist.md` |
+| **Commit changes** | After each SOP | Git commit with conventional message (see Version Control) |
 | **Maintain context** | After each SOP | Update Current Session, Session Prompt Template |
 | **Log sessions** | End of session | Add entry to Session Log |
 | **Resume context** | New session | Read AI-SESSION.md, continue from last SOP |
@@ -23,6 +24,41 @@ The AI agent is responsible for **managing the entire session lifecycle**:
 - Initial project name and description
 - Answers to clarifying questions
 - Approval/feedback on outputs
+
+---
+
+## Version Control Guidelines
+
+The AI agent is responsible for committing changes at appropriate checkpoints:
+
+### When to Commit
+
+| Trigger | Commit Type | Message Pattern | Example |
+|---------|-------------|-----------------|---------|
+| **After completing an SOP** | Final | `feat(sop-XXX): {description}` | `feat(sop-101): add database schema` |
+| **Significant progress within large SOP** | Intermediate | `wip(sop-XXX): {description}` | `wip(sop-200): add user endpoints` |
+| **Bug fix during development** | Fix | `fix: {description}` | `fix: correct validation logic` |
+| **Documentation updates** | Docs | `docs: {description}` | `docs: update API reference` |
+
+### Key Rules
+
+1. **Commit after each SOP** — One atomic commit per completed SOP (easy to track/revert)
+2. **Large SOPs may have multiple commits** — Use `wip:` for intermediate, `feat:` for final
+3. **Always commit before switching SOPs** — Never carry uncommitted changes across SOPs
+4. **Commit before ending a session** — Ensure no work is lost between sessions
+
+### Commit Message Format
+
+Follow [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+<type>(scope): <description>
+
+[optional body]
+```
+
+**Types:** `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `wip`  
+**Scope:** Usually the SOP number (e.g., `sop-101`) or component name
 
 ---
 
