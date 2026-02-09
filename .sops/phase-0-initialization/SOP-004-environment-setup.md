@@ -88,7 +88,7 @@ DEBUG=false
 
 Create `/docs/environment-variables.md`:
 
-```markdown
+````markdown
 # Environment Variables
 
 ## Required Variables
@@ -122,7 +122,7 @@ uuidgen
 |----------|-------------|---------|------------|
 | `NODE_ENV` | `development` | `staging` | `production` |
 | `APP_URL` | `http://localhost:3000` | `https://staging.app.com` | `https://app.com` |
-```
+````
 
 ### 4. Set Up Local Development Database
 
@@ -270,7 +270,7 @@ Create `.vscode/extensions.json` (recommended extensions):
 
 Add to `README.md` or create `docs/development-setup.md`:
 
-```markdown
+````markdown
 # Development Setup
 
 ## Prerequisites
@@ -336,7 +336,7 @@ Change the port in `.env`:
 ```
 PORT=3001
 ```
-```
+````
 
 ---
 

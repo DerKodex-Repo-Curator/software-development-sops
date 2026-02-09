@@ -169,6 +169,7 @@ Execute **SOP-{XXX}** ({Title}).
 1. `.sops/phase-X-{phase}/SOP-XXX-{name}.md` — The procedure
 2. {List prerequisite output files}
 
+**Refer to `AI-GUIDE.md` to attend to your responsibilities and for guidance on best practices.**
 **Follow the SOP's Procedure section step by step.**
 **Create all outputs listed in the SOP's Outputs section.**
 **Update `.prompts/AI-SESSION.md` when complete.**
