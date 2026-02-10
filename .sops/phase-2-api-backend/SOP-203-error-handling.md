@@ -383,7 +383,7 @@ export const logger = {
 
 Add to `/docs/api/errors.md`:
 
-```markdown
+````markdown
 # API Error Codes
 
 ## Error Response Format
@@ -446,7 +446,7 @@ Validation errors include a `details` array:
   ]
 }
 ```
-```
+````
 
 ---
 
