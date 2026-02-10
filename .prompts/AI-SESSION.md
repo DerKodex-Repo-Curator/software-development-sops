@@ -19,6 +19,12 @@
 5. Update the "Session Prompt Template" with current state
 6. Add an entry to the Session Log
 
+**On phase completion:**
+1. Update the Checkpoint Tracker with document locations and key decisions
+2. Run the checkpoint prompt from `AI-GUIDE.md` → "Checkpoint System"
+3. Record checkpoint status and any issues found
+4. Await human approval before proceeding to the next phase
+
 **On session resume:**
 1. Read this file to recover context
 2. Continue from the next incomplete SOP
@@ -120,6 +126,98 @@
 - 🔄 In Progress  
 - ✅ Complete
 - ⏭️ Skipped (not applicable)
+
+---
+
+## �️ Checkpoint Tracker
+
+> **AI Agent Responsibility:** Update this section as you complete each phase. Fill in the document locations and key decisions so checkpoints can be run efficiently.
+>
+> **See:** `AI-GUIDE.md` → "Checkpoint System" for the checkpoint prompt template.
+
+### Source of Truth (Level 0)
+
+These are human-approved and must never be contradicted:
+
+| Document | Location | Last Updated | Key Decisions |
+|----------|----------|--------------|---------------|
+| Requirements | `/docs/requirements.md` | {date or ⬚} | {e.g., "15 user stories, MVP scope defined"} |
+| Tech Stack | `/docs/tech-stack.md` | {date or ⬚} | {e.g., "Next.js, Prisma, PostgreSQL"} |
+
+### Phase 1 Checkpoint — Database Design
+
+| Design Doc (Level 1) | Location | Traces to Requirement |
+|----------------------|----------|----------------------|
+| Database Selection | {location or ⬚} | {e.g., "PostgreSQL for relational data needs"} |
+| Schema/ERD | {location or ⬚} | {e.g., "All entities from requirements mapped"} |
+| Seed Data | {location or ⬚} | {e.g., "Test data for all user roles"} |
+
+| Implementation (Level 2) | Location | Traces to Design |
+|--------------------------|----------|------------------|
+| Prisma Schema | {e.g., `prisma/schema.prisma` or ⬚} | {e.g., "Matches ERD"} |
+| Migrations | {e.g., `prisma/migrations/` or ⬚} | |
+| Seed Script | {e.g., `prisma/seed.ts` or ⬚} | |
+
+**Checkpoint Status:** ⬚ Not Run / ✅ Passed / ⚠️ Issues Found  
+**Last Run:** {date}  
+**Issues:** {none or list issues}
+
+---
+
+### Phase 2 Checkpoint — Backend/API
+
+| Design Doc (Level 1) | Location | Traces to Requirement |
+|----------------------|----------|----------------------|
+| API Endpoints | {location or ⬚} | {e.g., "CRUD for all resources"} |
+| OpenAPI Spec | {location or ⬚} | |
+| Auth Strategy | {location or ⬚} | {e.g., "JWT per tech-stack.md"} |
+| Error Codes | {location or ⬚} | |
+
+| Implementation (Level 2) | Location | Traces to Design |
+|--------------------------|----------|------------------|
+| API Routes | {e.g., `src/app/api/` or ⬚} | |
+| Auth Module | {location or ⬚} | |
+| Validation Schemas | {location or ⬚} | |
+
+**Checkpoint Status:** ⬚ Not Run / ✅ Passed / ⚠️ Issues Found  
+**Last Run:** {date}  
+**Issues:** {none or list issues}
+
+---
+
+### Phase 3 Checkpoint — Frontend
+
+| Design Doc (Level 1) | Location | Traces to Requirement |
+|----------------------|----------|----------------------|
+| Component Architecture | {location or ⬚} | {e.g., "Component per user story"} |
+| Styling Standards | {location or ⬚} | |
+| Form Patterns | {location or ⬚} | |
+
+| Implementation (Level 2) | Location | Traces to Design |
+|--------------------------|----------|------------------|
+| Components | {e.g., `src/components/` or ⬚} | |
+| Pages/Routes | {e.g., `src/app/` or ⬚} | |
+| API Client | {location or ⬚} | |
+
+**Checkpoint Status:** ⬚ Not Run / ✅ Passed / ⚠️ Issues Found  
+**Last Run:** {date}  
+**Issues:** {none or list issues}
+
+---
+
+### Phase 5 Checkpoint — Pre-Deployment Quality
+
+| Validation | Status | Notes |
+|------------|--------|-------|
+| All user stories implemented | ⬚ | |
+| Test coverage meets target | ⬚ | {e.g., "80% target"} |
+| No critical security issues | ⬚ | |
+| Tech stack compliance verified | ⬚ | |
+| Documentation complete | ⬚ | |
+
+**Checkpoint Status:** ⬚ Not Run / ✅ Passed / ⚠️ Issues Found  
+**Last Run:** {date}  
+**Issues:** {none or list issues}
 
 ---
 
