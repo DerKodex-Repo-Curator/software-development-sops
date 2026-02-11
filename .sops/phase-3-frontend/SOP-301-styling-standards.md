@@ -472,5 +472,5 @@ Execute SOP-301 (Styling Standards):
 
 - **SOP-300:** Component Architecture (component structure)
 - **SOP-006:** Code Style Standards (formatting)
-- **SOP-303:** Form Handling (form styling)
-- **SOP-304:** Progressive Web App (mobile-first styling) *(optional)*
+- **SOP-304:** Form Handling (form styling)
+- **SOP-306:** Progressive Web App (mobile-first styling) *(optional)*

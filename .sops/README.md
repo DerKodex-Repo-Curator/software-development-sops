@@ -68,11 +68,13 @@ When copied to a new project, the structure is:
 
 | SOP | Title | Description |
 |-----|-------|-------------|
-| [SOP-200](phase-2-backend/SOP-200-api-design.md) | API Design | REST/GraphQL conventions, OpenAPI specs, versioning |
-| [SOP-201](phase-2-backend/SOP-201-authentication.md) | Authentication | OAuth2, JWT, session management patterns |
-| [SOP-202](phase-2-backend/SOP-202-authorization.md) | Authorization | RBAC/ABAC implementation, permission matrices |
-| [SOP-203](phase-2-backend/SOP-203-error-handling.md) | Error Handling | Standard error codes, logging formats, user messages |
-| [SOP-204](phase-2-backend/SOP-204-validation.md) | Validation | Input sanitization, schema validation |
+| [SOP-200](phase-2-api-backend/SOP-200-service-layer.md) | Service Layer | Business logic, use case implementation, domain rules |
+| [SOP-201](phase-2-api-backend/SOP-201-repository-pattern.md) | Repository Pattern | Data access layer, query encapsulation, transactions |
+| [SOP-202](phase-2-api-backend/SOP-202-api-design.md) | API Design | REST/GraphQL conventions, OpenAPI specs, versioning |
+| [SOP-203](phase-2-api-backend/SOP-203-authentication.md) | Authentication | OAuth2, JWT, session management patterns |
+| [SOP-204](phase-2-api-backend/SOP-204-authorization.md) | Authorization | RBAC/ABAC implementation, permission matrices |
+| [SOP-205](phase-2-api-backend/SOP-205-error-handling.md) | Error Handling | Standard error codes, logging formats, user messages |
+| [SOP-206](phase-2-api-backend/SOP-206-validation.md) | Validation | Input sanitization, schema validation |
 
 ### Phase 3: Frontend Development
 
@@ -80,9 +82,11 @@ When copied to a new project, the structure is:
 |-----|-------|-------------|
 | [SOP-300](phase-3-frontend/SOP-300-component-architecture.md) | Component Architecture | Atomic design, state management patterns |
 | [SOP-301](phase-3-frontend/SOP-301-styling-standards.md) | Styling Standards | CSS methodology, design tokens, accessibility |
-| [SOP-302](phase-3-frontend/SOP-302-api-integration.md) | API Integration | Data fetching patterns, caching, optimistic updates |
-| [SOP-303](phase-3-frontend/SOP-303-form-handling.md) | Form Handling | Validation UX, error states, submission flows |
-| [SOP-304](phase-3-frontend/SOP-304-progressive-web-app.md) | Progressive Web App *(Optional)* | PWA setup, offline support, mobile UI, native APIs |
+| [SOP-302](phase-3-frontend/SOP-302-ui-ux-design.md) | UI/UX Design | Wireframes, user flows, component hierarchy planning |
+| [SOP-303](phase-3-frontend/SOP-303-api-integration.md) | API Integration | Data fetching patterns, caching, optimistic updates |
+| [SOP-304](phase-3-frontend/SOP-304-form-handling.md) | Form Handling | Validation UX, error states, submission flows |
+| [SOP-305](phase-3-frontend/SOP-305-page-implementation.md) | Page Implementation | Page composition, layouts, navigation, state management |
+| [SOP-306](phase-3-frontend/SOP-306-progressive-web-app.md) | Progressive Web App *(Optional)* | PWA setup, offline support, mobile UI, native APIs |
 
 ### Phase 4: AI Integration
 
@@ -99,8 +103,9 @@ When copied to a new project, the structure is:
 |-----|-------|-------------|
 | [SOP-500](phase-5-quality/SOP-500-unit-testing.md) | Unit Testing | Vitest setup, mocking strategies, coverage targets |
 | [SOP-501](phase-5-quality/SOP-501-integration-testing.md) | Integration Testing | Test database, factories, API testing |
-| [SOP-502](phase-5-quality/SOP-502-code-review.md) | Code Review | Review checklist, PR templates, feedback guidelines |
-| [SOP-503](phase-5-quality/SOP-503-documentation.md) | Documentation | README, TSDoc, OpenAPI, architecture docs |
+| [SOP-502](phase-5-quality/SOP-502-e2e-testing.md) | E2E Testing | Playwright, user flows, accessibility, visual regression |
+| [SOP-503](phase-5-quality/SOP-503-code-review.md) | Code Review | Review checklist, PR templates, feedback guidelines |
+| [SOP-504](phase-5-quality/SOP-504-documentation.md) | Documentation | README, TSDoc, OpenAPI, architecture docs |
 
 ### Phase 6: Deployment & Operations
 
@@ -199,7 +204,7 @@ Links to related procedures.
 │     [Init]    ──►    [Database] ──►  [Backend] ──►   [Frontend]         │
 │     SOP-000          SOP-100         SOP-200         SOP-300            │
 │     to               to              to              to                 │
-│     SOP-006          SOP-102         SOP-204         SOP-304*           │
+│     SOP-006          SOP-102         SOP-206         SOP-306*           │
 │                                                                         │
 │                         │                                               │
 │                         ▼                                               │
@@ -214,7 +219,7 @@ Links to related procedures.
 │     [Quality]  ──►   [Deploy]   ──►   🚀 PRODUCTION                     │
 │     SOP-500          SOP-600                                            │
 │     to               to                                                 │
-│     SOP-503          SOP-603                                            │
+│     SOP-504          SOP-603                                            │
 │                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
@@ -257,6 +262,7 @@ Links to related procedures.
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.0.0 | 2026-01-28 | Initial SOP framework with 29 procedures |
+| 1.1.0 | 2026-02-11 | Added 8 new SOPs: Service Layer (200), Repository Pattern (201), UI/UX Design (302), Page Implementation (305), E2E Testing (502). Total: 37 procedures |
 
 ---
 

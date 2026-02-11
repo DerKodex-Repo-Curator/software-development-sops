@@ -82,30 +82,41 @@
 
 ## Phase 2: API & Backend
 
-### API Design (SOP-200)
+### Service Layer (SOP-200)
+- [ ] User stories mapped to service methods
+- [ ] Service interfaces defined
+- [ ] Business rules documented
+- [ ] Traceability matrix created
+
+### Repository Pattern (SOP-201)
+- [ ] Repository interfaces defined
+- [ ] Data access encapsulated
+- [ ] Transaction support implemented
+
+### API Design (SOP-202)
 - [ ] API specification created (OpenAPI/Swagger)
 - [ ] Endpoints follow RESTful conventions
 - [ ] Versioning strategy defined
 - [ ] Rate limiting considered
 
-### Authentication (SOP-201)
+### Authentication (SOP-203)
 - [ ] Auth method selected: _____________________
 - [ ] Token management implemented
 - [ ] Password hashing configured
 - [ ] Session/token expiry defined
 
-### Authorization (SOP-202)
+### Authorization (SOP-204)
 - [ ] Roles defined: _____________________
 - [ ] Permission matrix documented
 - [ ] Route protection implemented
 
-### Error Handling (SOP-203)
+### Error Handling (SOP-205)
 - [ ] Standard error response format defined
 - [ ] Error codes documented
 - [ ] Logging configured
 - [ ] User-friendly messages for common errors
 
-### Validation (SOP-204)
+### Validation (SOP-206)
 - [ ] Input validation library selected
 - [ ] Request schemas defined
 - [ ] Sanitization for user inputs
@@ -125,18 +136,32 @@
 - [ ] Responsive breakpoints set
 - [ ] Accessibility basics covered (WCAG 2.1 AA)
 
-### API Integration (SOP-302)
+### UI/UX Design (SOP-302)
+- [ ] User stories analyzed for UI implications
+- [ ] Wireframes created (text-based or Figma)
+- [ ] User flows documented
+- [ ] Component hierarchy defined
+- [ ] Design approved by stakeholder
+
+### API Integration (SOP-303)
 - [ ] API client/wrapper created
 - [ ] Loading states handled
 - [ ] Error states handled
 - [ ] Caching strategy defined (if needed)
 
-### Form Handling (SOP-303)
+### Form Handling (SOP-304)
 - [ ] Form library selected (if any)
 - [ ] Validation feedback patterns
 - [ ] Submission loading states
 
-### Progressive Web App (SOP-304) — *Optional*
+### Page Implementation (SOP-305)
+- [ ] Page planning documents created
+- [ ] Server/client components structured
+- [ ] Loading skeletons implemented
+- [ ] Error boundaries configured
+- [ ] Navigation wired up
+
+### Progressive Web App (SOP-306) — *Optional*
 - [ ] PWA required for this project: ☐ Yes / ☐ No
 - [ ] Service worker configured (Serwist/next-pwa)
 - [ ] Web manifest with icons
@@ -177,16 +202,23 @@
 - [ ] API contract tests written
 - [ ] Database integration tests written
 
-### Code Review (SOP-502)
+### E2E Testing (SOP-502)
+- [ ] Playwright configured
+- [ ] Page objects created
+- [ ] Critical user flows tested
+- [ ] Accessibility tests included
+- [ ] CI pipeline runs E2E tests
+
+### Code Review (SOP-503)
 - [ ] PR template created
 - [ ] Review checklist defined
 - [ ] Minimum reviewers set: _____
 
-### Security Audit (SOP-503)
-- [ ] Dependency scanner configured
-- [ ] OWASP Top 10 reviewed
-- [ ] Secrets detection enabled
-- [ ] No hardcoded credentials
+### Documentation (SOP-504)
+- [ ] README complete
+- [ ] API documentation generated
+- [ ] Architecture documented
+- [ ] Deployment instructions added
 
 ---
 
