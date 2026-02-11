@@ -1,4 +1,4 @@
-# SOP-200: API Design
+# SOP-202: API Design
 
 ## Purpose
 
@@ -10,7 +10,7 @@ Design RESTful APIs that are consistent, intuitive, and well-documented. Good AP
 
 - **Applies to:** All projects with API endpoints
 - **Covers:** REST conventions, endpoint design, OpenAPI documentation
-- **Does not cover:** Authentication (SOP-201), Error handling (SOP-203)
+- **Does not cover:** Authentication (SOP-203), Error handling (SOP-205)
 
 ---
 
@@ -269,7 +269,7 @@ Read:
 - `/docs/database/schema.md` for data model
 - `.sops/templates/api-design-template.yaml` as OpenAPI starting point
 
-Execute SOP-200 (API Design):
+Execute SOP-202 (API Design):
 1. Identify resources from the data model
 2. Design endpoints for each resource
 3. Define request/response formats
@@ -289,7 +289,7 @@ Execute SOP-200 (API Design):
 ## Related SOPs
 
 - **SOP-101:** Schema Design (data model → resources)
-- **SOP-201:** Authentication (securing endpoints)
-- **SOP-202:** Authorization (access control)
-- **SOP-203:** Error Handling (error responses)
-- **SOP-204:** Validation (input validation)
+- **SOP-203: Authentication (securing endpoints)
+- **SOP-204:** Authorization (access control)
+- **SOP-205: Error Handling (error responses)
+- **SOP-206: Validation (input validation)

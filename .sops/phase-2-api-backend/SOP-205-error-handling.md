@@ -1,4 +1,4 @@
-# SOP-203: Error Handling
+# SOP-205: Error Handling
 
 ## Purpose
 
@@ -16,7 +16,7 @@ Implement consistent, informative error handling across the application. Good er
 
 ## Prerequisites
 
-- [ ] SOP-200 (API Design) completed — response formats defined
+- [ ] SOP-202 (API Design) completed — response formats defined
 - [ ] Logger utility available (SOP-004)
 
 ---
@@ -474,7 +474,7 @@ Read:
 - `/docs/api/endpoints.md` for API structure
 - Existing API routes in src/app/api/
 
-Execute SOP-203 (Error Handling):
+Execute SOP-205 (Error Handling):
 1. Define error response format
 2. Create error code constants
 3. Create custom error classes
@@ -499,8 +499,8 @@ Execute SOP-203 (Error Handling):
 
 ## Related SOPs
 
-- **SOP-200:** API Design (response formats)
-- **SOP-204:** Validation (validation errors)
+- **SOP-202:** API Design (response formats)
+- **SOP-206: Validation (validation errors)
 - **SOP-602:** Monitoring (error tracking)
 
 ---

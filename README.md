@@ -34,10 +34,10 @@ Building software consistently across a team is hard. This framework provides:
     ├── templates/               # Reusable templates
     ├── phase-0-initialization/  # Project setup (7 SOPs)
     ├── phase-1-database/        # Database design (3 SOPs)
-    ├── phase-2-api-backend/     # API development (5 SOPs)
-    ├── phase-3-frontend/        # Frontend development (4 SOPs)
+    ├── phase-2-api-backend/     # API development (7 SOPs)
+    ├── phase-3-frontend/        # Frontend development (7 SOPs)
     ├── phase-4-ai-integration/  # AI/LLM features (4 SOPs)
-    ├── phase-5-quality/         # Testing & review (4 SOPs)
+    ├── phase-5-quality/         # Testing & review (5 SOPs)
     └── phase-6-deployment/      # Deployment & ops (4 SOPs)
 ```
 
