@@ -77,26 +77,31 @@
 | --- | ------------------ | ------ | ----------------------------------- | ----- |
 | 100 | Database Selection | ⬚      | `/docs/tech-stack.md`               |       |
 | 101 | Schema Design      | ⬚      | `/docs/database/erd.md`, migrations |       |
-| 103 | Seed Data          | ⬚      | `/seeds/` or `/fixtures/`           |       |
+| 102 | Seed Data          | ⬚      | `/seeds/` or `/fixtures/`           |       |
 
 ### Phase 2: Backend
 
-| SOP | Title          | Status | Output Location                      | Notes |
-| --- | -------------- | ------ | ------------------------------------ | ----- |
-| 200 | API Design     | ⬚      | `/docs/api/openapi.yaml`             |       |
-| 201 | Authentication | ⬚      | Auth module/routes                   |       |
-| 202 | Authorization  | ⬚      | `/docs/authorization.md`, middleware |       |
-| 203 | Error Handling | ⬚      | Error handler module                 |       |
-| 204 | Validation     | ⬚      | Validation schemas                   |       |
+| SOP | Title              | Status | Output Location                                      | Notes |
+| --- | ------------------ | ------ | ---------------------------------------------------- | ----- |
+| 200 | Service Layer      | ⬚      | `src/services/`, `/docs/backend/services.md`         |       |
+| 201 | Repository Pattern | ⬚      | `src/repositories/`, `/docs/backend/repositories.md` |       |
+| 202 | API Design         | ⬚      | `/docs/api/openapi.yaml`, `/docs/api/endpoints.md`   |       |
+| 203 | Authentication     | ⬚      | Auth module/routes                                   |       |
+| 204 | Authorization      | ⬚      | `/docs/authorization.md`, middleware                 |       |
+| 205 | Error Handling     | ⬚      | Error handler module                                 |       |
+| 206 | Validation         | ⬚      | Validation schemas                                   |       |
 
 ### Phase 3: Frontend
 
-| SOP | Title                  | Status | Output Location              | Notes |
-| --- | ---------------------- | ------ | ---------------------------- | ----- |
-| 300 | Component Architecture | ⬚      | `/src/components/` structure |       |
-| 301 | Styling Standards      | ⬚      | Style configs, design tokens |       |
-| 302 | API Integration        | ⬚      | API client module            |       |
-| 303 | Form Handling          | ⬚      | Form components/hooks        |       |
+| SOP | Title                  | Status | Output Location                | Notes |
+| --- | ---------------------- | ------ | ------------------------------ | ----- |
+| 300 | Component Architecture | ⬚      | `/src/components/` structure   |       |
+| 301 | Styling Standards      | ⬚      | Style configs, design tokens   |       |
+| 302 | UI/UX Design           | ⬚      | `/docs/frontend/wireframes.md` |       |
+| 303 | API Integration        | ⬚      | API client module              |       |
+| 304 | Form Handling          | ⬚      | Form components/hooks          |       |
+| 305 | Page Implementation    | ⬚      | `/src/app/` pages              |       |
+| 306 | Progressive Web App    | ⬚      | PWA config, service worker     |       |
 
 ### Phase 4: AI Integration (If Applicable)
 
@@ -104,8 +109,8 @@
 | --- | --------------- | ------ | ------------------------- | ----- |
 | 400 | AI Feasibility  | ⬚      | `/docs/ai-feasibility.md` |       |
 | 401 | LLM Integration | ⬚      | AI service module         |       |
-| 404 | AI Testing      | ⬚      | AI test suite             |       |
-| 405 | Cost Monitoring | ⬚      | Cost tracking setup       |       |
+| 402 | AI Testing      | ⬚      | AI test suite             |       |
+| 403 | Cost Monitoring | ⬚      | Cost tracking setup       |       |
 
 ### Phase 5: Quality
 
@@ -113,17 +118,18 @@
 | --- | ------------------- | ------ | ---------------------------------- | ----- |
 | 500 | Unit Testing        | ⬚      | Test configuration, `/tests/unit/` |       |
 | 501 | Integration Testing | ⬚      | `/tests/integration/`              |       |
+| 502 | E2E Testing         | ⬚      | Playwright config, `/tests/e2e/`   |       |
 | 503 | Code Review         | ⬚      | PR template, review checklist      |       |
-| 504 | Security Audit      | ⬚      | Security scan configs              |       |
+| 504 | Documentation       | ⬚      | README, TSDoc, OpenAPI docs        |       |
 
 ### Phase 6: Deployment
 
-| SOP | Title                 | Status | Output Location                    | Notes |
-| --- | --------------------- | ------ | ---------------------------------- | ----- |
-| 602 | Container Standards   | ⬚      | `Dockerfile`, `docker-compose.yml` |       |
-| 603 | Deployment Strategy   | ⬚      | `/docs/deployment.md`              |       |
-| 604 | Monitoring & Alerting | ⬚      | Monitoring configs                 |       |
-| 605 | Incident Response     | ⬚      | `/docs/incident-response.md`       |       |
+| SOP | Title                     | Status | Output Location                        | Notes |
+| --- | ------------------------- | ------ | -------------------------------------- | ----- |
+| 600 | Environment Configuration | ⬚      | `.env.example`, `/docs/deployment.md`  |       |
+| 601 | CI/CD Pipelines           | ⬚      | `.github/workflows/`                   |       |
+| 602 | Monitoring & Alerting     | ⬚      | Sentry config, health check routes     |       |
+| 603 | Maintenance & Incidents   | ⬚      | Runbooks, `/docs/incident-response.md` |       |
 
 **Status Legend:**
 
