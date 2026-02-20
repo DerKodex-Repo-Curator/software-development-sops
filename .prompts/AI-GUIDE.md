@@ -1,14 +1,11 @@
 # AI Agent Guide for SOP-Driven Development
 
-> **This document explains how to use the SOP framework with AI coding agents.**
->
-> The SOPs are designed as a **single source of truth** for both human developers and AI agents, enabling consistent, efficient, and auditable software development.
+> This document explains how to use the SOP framework with AI coding agents.
+> The SOPs are a **single source of truth** for both human developers and AI agents.
 
 ---
 
 ## AI Agent Responsibilities
-
-The AI agent is responsible for **managing the entire session lifecycle**:
 
 | Responsibility         | When             | What to Update                                                      |
 | ---------------------- | ---------------- | ------------------------------------------------------------------- |
@@ -17,21 +14,15 @@ The AI agent is responsible for **managing the entire session lifecycle**:
 | **Update checklist**   | After each SOP   | Check off completed items in `.sops/templates/project-checklist.md` |
 | **Commit changes**     | After each SOP   | Git commit with conventional message (see Version Control)          |
 | **Run checkpoint**     | After each phase | Verify alignment with requirements (see Checkpoint System)          |
-| **Maintain context**   | After each SOP   | Update Current Session, Session Prompt Template                     |
+| **Maintain context**   | After each SOP   | Update Current Session, Context Cache, Session Prompt Template      |
 | **Log sessions**       | End of session   | Add entry to Session Log                                            |
 | **Resume context**     | New session      | Read AI-SESSION.md, continue from last SOP                          |
 
-**The human only provides:**
-
-- Initial project name and description
-- Answers to clarifying questions
-- Approval/feedback on outputs
+**The human only provides:** initial project name/description, answers to questions, approval/feedback.
 
 ---
 
 ## Version Control Guidelines
-
-The AI agent is responsible for committing changes at appropriate checkpoints:
 
 ### When to Commit
 
@@ -44,53 +35,28 @@ The AI agent is responsible for committing changes at appropriate checkpoints:
 
 ### Key Rules
 
-1. **Commit after each SOP** — One atomic commit per completed SOP (easy to track/revert)
-2. **Large SOPs may have multiple commits** — Use `wip:` for intermediate, `feat:` for final
-3. **Always commit before switching SOPs** — Never carry uncommitted changes across SOPs
-4. **Commit before ending a session** — Ensure no work is lost between sessions
+1. **Commit after each SOP** — one atomic commit per SOP
+2. **Large SOPs may have multiple commits** — use `wip:` for intermediate, `feat:` for final
+3. **Always commit before switching SOPs** — never carry uncommitted changes across SOPs
+4. **Commit before ending a session** — ensure no work is lost
 
-### Commit Message Format
-
-Follow [Conventional Commits](https://www.conventionalcommits.org/):
-
-```
-<type>(scope): <description>
-
-[optional body]
-```
-
-**Types:** `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `wip`  
-**Scope:** Usually the SOP number (e.g., `sop-101`) or component name
+Format: [Conventional Commits](https://www.conventionalcommits.org/) — `<type>(scope): <description>`
+Types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `wip`
+Scope: usually SOP number (e.g., `sop-101`) or component name
 
 ---
 
 ## Checkpoint System (Drift Prevention)
 
-AI agents can drift from original specifications over time. This **hierarchical validation system** catches drift at multiple levels.
-
 ### Validation Hierarchy
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  LEVEL 0: SOURCE OF TRUTH (Human-Approved)                      │
-│  └── requirements.md, tech-stack.md                             │
-│      Owned by: Project Lead | Changes require approval          │
-├─────────────────────────────────────────────────────────────────┤
-│  LEVEL 1: DESIGN DECISIONS (SOP Documentation Outputs)          │
-│  └── schema.md, api-endpoints.md, component-architecture.md     │
-│      Must conform to: Level 0                                   │
-├─────────────────────────────────────────────────────────────────┤
-│  LEVEL 2: IMPLEMENTATION (Actual Code)                          │
-│  └── prisma/schema.prisma, src/app/api/**, components/**        │
-│      Must conform to: Level 1 (which conforms to Level 0)       │
-└─────────────────────────────────────────────────────────────────┘
+- **Level 0 (Source of Truth):** `requirements.md`, `tech-stack.md` — human-approved, never contradicted
+- **Level 1 (Design Decisions):** Schema docs, API specs, component architecture — must conform to Level 0
+- **Level 2 (Implementation):** Actual code — must conform to Level 1
 
-Validation flows DOWNWARD:
-  Level 0 → Level 1: Do design docs honor requirements?
-  Level 1 → Level 2: Does code honor design docs?
-```
+Validation flows downward: Level 0 → Level 1 → Level 2.
 
-### Phase-Specific Validation Layers
+### Phase-Specific Validation
 
 | Phase       | Level 1 (Design Docs)                                     | Level 2 (Code)                        |
 | ----------- | --------------------------------------------------------- | ------------------------------------- |
@@ -110,753 +76,100 @@ Validation flows DOWNWARD:
 | **CP-3**   | After Phase 3 | User stories → Component design → UI code         |
 | **CP-4**   | After Phase 5 | Full stack validation before deployment           |
 
-### Checkpoint Prompt Template
+### Checkpoint Procedure
 
-Use this hierarchical validation prompt at each checkpoint.
+> Read the Checkpoint Tracker in `AI-SESSION.md` for pre-filled document locations.
 
-> **Note:** Document locations and key decisions should already be filled in the **Checkpoint Tracker** section of `AI-SESSION.md`. Reference that section instead of searching for files.
-
-```markdown
-## Alignment Checkpoint — Phase {X} Complete
-
-Perform a **hierarchical drift analysis** before proceeding.
-
-**First:** Read the Checkpoint Tracker in `.prompts/AI-SESSION.md` for pre-filled document locations and key decisions for this phase.
-
----
-
-### Layer 0 → Layer 1: Design Alignment
-
-**Re-read Source of Truth:**
-
-- Read locations from AI-SESSION.md → Checkpoint Tracker → Source of Truth table
-
-**Audit Design Documents for this phase:**
-
-- Read locations from AI-SESSION.md → Checkpoint Tracker → Phase {X} → Design Docs table
-
-**Report: Do design decisions honor requirements?**
-
-| Requirement/User Story | Design Doc                | Addressed? | Location in Doc | Drift Notes |
-| ---------------------- | ------------------------- | ---------- | --------------- | ----------- |
-| {from requirements.md} | {from checkpoint tracker} | ✅/⚠️/❌   | Section X       |             |
-
-**Design Drift Findings:**
-
-- [ ] Design decisions that don't trace to requirements (scope creep)
-- [ ] Requirements not addressed in design docs (gaps)
-- [ ] Tech stack deviations
-
----
-
-### Layer 1 → Layer 2: Implementation Alignment
-
-**Audit Code against Design Documents:**
-
-- Read locations from AI-SESSION.md → Checkpoint Tracker → Phase {X} → Implementation table
-
-**Report: Does code honor design decisions?**
-
-| Design Decision   | Expected Implementation | Actual Code | Compliant? | File:Line  |
-| ----------------- | ----------------------- | ----------- | ---------- | ---------- |
-| {from design doc} | {expected}              | {actual}    | ✅/❌      | {location} |
-
-**Implementation Drift Findings:**
-
-- [ ] Code that doesn't match design docs
-- [ ] Design docs not yet implemented (incomplete)
-- [ ] Undocumented implementations (rogue code)
-
----
-
-### Summary & Actions
-
-**Overall Alignment Score:**
-
-- Level 0 → 1: \_\_\_% compliant
-- Level 1 → 2: \_\_\_% compliant
-
-**Critical Issues (Block Proceeding):**
-
-1. ...
-
-**Warnings (Track in Backlog):**
-
-1. ...
-
-**Recommendations:**
-
-- [ ] Fixes required before next phase
-- [ ] Design docs to update
-- [ ] Requirements clarifications needed from project lead
-
----
-
-**Update AI-SESSION.md:**
-
-1. Set Checkpoint Status to ✅ Passed or ⚠️ Issues Found
-2. Record Last Run date
-3. Document any issues found
-
-⏸️ **STOP: Await human approval before proceeding to next phase.**
-```
+1. **Layer 0 → 1 (Design Alignment):** Re-read Source of Truth docs. For each requirement, verify it's addressed in the design doc. Report: `| Requirement | Design Doc | Addressed? | Drift Notes |`
+2. **Layer 1 → 2 (Implementation Alignment):** For each design decision, verify code implements it. Report: `| Design Decision | Expected | Actual Code | Compliant? | File:Line |`
+3. **Summary:** Calculate compliance %. List critical issues (block proceeding), warnings (track), and recommendations.
+4. **Update AI-SESSION.md:** Set checkpoint status, record date and issues.
+5. **⏸️ STOP:** Await human approval before proceeding to next phase.
 
 ### Quick Checkpoint (Mid-SOP)
 
-For lightweight validation during complex SOPs:
-
-```markdown
-Quick alignment check:
-
 1. What did I just implement? (List last 3 items)
-2. For each, trace back:
-   - Which design doc specifies this? (Level 1)
-   - Which requirement/user story needs this? (Level 0)
-3. Flag anything that doesn't trace back to Level 0
-4. Flag any Level 0 requirement that should have been addressed but wasn't
-```
+2. For each, trace back to design doc (Level 1) and requirement (Level 0)
+3. Flag anything that doesn't trace back; flag any requirement that should have been addressed but wasn't
 
 ### Recovery from Drift
 
-If checkpoint reveals drift:
-
-```markdown
-Drift detected. Recovery procedure:
-
-1. **Stop current work** — Don't compound the drift
-2. **Identify drift type:**
-   - Scope creep (added unrequested features) → Remove or get approval to add to requirements
-   - Deviation (built differently than specified) → Refactor to match spec OR update spec with approval
-   - Gap (missed requirement) → Implement missing piece
-3. **Update tracking:**
-   - Log drift in AI-SESSION.md Session Notes
-   - Update design docs if spec change is approved
-4. **Re-run checkpoint** after fixes
-5. **Get approval** before proceeding
-```
+1. **Stop current work** — don't compound drift
+2. **Identify type:** scope creep (remove or get approval), deviation (refactor or update spec), gap (implement missing piece)
+3. **Update tracking:** log in AI-SESSION.md, update design docs if change approved
+4. **Re-run checkpoint** after fixes; get approval before proceeding
 
 ---
 
-## Core Philosophy
+## SOP Adaptation (Project Execution Brief)
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                                                                     │
-│   SOPs define HOW (the method)                                      │
-│   Your prompts define WHAT (the subject)                            │
-│   AI executes the intersection                                      │
-│                                                                     │
-│     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐         │
-│     │    SOP      │  +  │   Context   │  =  │   Output    │         │
-│     │ (Procedure) │     │  (Project)  │     │  (Artifact) │         │
-│     └─────────────┘     └─────────────┘     └─────────────┘         │
-│                                                                     │
-└─────────────────────────────────────────────────────────────────────┘
-```
+After Phase 0, generate `/docs/execution-brief.md` — a document that specializes all remaining SOPs to the actual project.
 
-### Key Principles
+### Required Sections
 
-1. **Reference, Don't Repeat** — Point AI to SOP files instead of rewriting instructions
-2. **Chain Dependencies** — Each SOP's outputs become the next SOP's inputs
-3. **Track Progress** — Use the session template to maintain state across conversations
-4. **Verify Outputs** — Check that AI-generated files match SOP requirements
-5. **Document Deviations** — If the AI deviates from an SOP, capture why
+| Section                    | Source                           | Purpose                                                                    |
+| -------------------------- | -------------------------------- | -------------------------------------------------------------------------- |
+| **Entity Map**             | `/docs/requirements.md`          | Table: Entity, Relationships, Used in SOPs                                 |
+| **Tech Stack Adaptations** | `/docs/tech-stack.md`            | Table: SOP Area, Generic SOP Says, This Project Uses, Adaptation           |
+| **Pattern Overrides**      | `/docs/architecture/patterns.md` | Table: Pattern, SOP Default, This Project, Reason                          |
+| **Feature Scope (MVP)**    | `/docs/requirements.md`          | Table: Feature, Priority, Relevant SOPs, Pages, API Resources              |
+| **Phase Relevance**        | All Phase 0 outputs              | Mark each SOP: ✅ Execute / ⏭️ Skip, with reason                           |
+| **Constraints**            | User input                       | Bullet list of project-specific constraints                                |
+| **Placeholder Resolution** | Entity Map                       | Per-entity card mapping `[Entity]`→actual name, `[entity]`→lowercase, etc. |
 
----
-
-## SOP Adaptation (Project-Specific Execution)
-
-Generic SOPs use `[Entity]` placeholders and one-size-fits-all examples. This works for teaching the pattern, but when an AI agent executes them, it must mentally translate to the actual project — and this is where context gets lost, entities get forgotten, and wrong patterns get applied.
-
-**Solution:** After Phase 0 completes, the AI generates a **Project Execution Brief** — a single document that specializes all remaining SOPs to the actual project.
-
-### When to Generate
-
-The Execution Brief is a **mandatory deliverable of Phase 0 completion**. Generate it after SOP-006 (Code Style Standards) is done, before starting Phase 1.
-
-### What the Execution Brief Contains
-
-Create `/docs/execution-brief.md`:
-
-```markdown
-# Project Execution Brief: {Project Name}
-
-> Auto-generated from Phase 0 outputs. This document specializes
-> all remaining SOPs to this project's specific context.
-
-## Entity Map
-
-Derived from `/docs/requirements.md`:
-
-| Entity | Relationships                        | Used in SOPs            | Notes       |
-| ------ | ------------------------------------ | ----------------------- | ----------- |
-| User   | has many Lists, has many PantryItems | 101, 200, 201, 202, 305 | Auth entity |
-| List   | belongs to User, has many Items      | 101, 200, 201, 202, 305 | Core entity |
-| Item   | belongs to List                      | 101, 200, 201, 202, 305 |             |
-| ...    | ...                                  | ...                     | ...         |
-
-## Tech Stack Adaptations
-
-Derived from `/docs/tech-stack.md`:
-
-| SOP Area | Generic SOP Says | This Project Uses | Adaptation                                      |
-| -------- | ---------------- | ----------------- | ----------------------------------------------- |
-| Database | Raw Prisma       | Supabase + Prisma | Use Supabase client for auth, Prisma for data   |
-| Auth     | NextAuth.js      | Supabase Auth     | Skip SOP-203 JWT sections, use Supabase session |
-| Hosting  | Vercel           | Vercel            | No change                                       |
-| Styling  | Tailwind CSS     | Tailwind CSS      | No change                                       |
-| ...      | ...              | ...               | ...                                             |
-
-## Pattern Overrides
-
-Derived from `/docs/architecture/patterns.md`:
-
-| Pattern    | SOP Default | This Project          | Reason                 |
-| ---------- | ----------- | --------------------- | ---------------------- |
-| Repository | Class-based | Function-based        | Simpler for team size  |
-| State Mgmt | React Query | React Query + Zustand | Offline support needed |
-| ...        | ...         | ...                   | ...                    |
-
-## Feature Scope (MVP)
-
-Derived from `/docs/requirements.md` MVP section:
-
-| Feature   | Priority | Relevant SOPs      | Pages                    | API Resources |
-| --------- | -------- | ------------------ | ------------------------ | ------------- |
-| User Auth | Must     | 203, 204, 305      | Login, Register, Profile | /api/auth/\*  |
-| Lists     | Must     | 200, 201, 202, 305 | Lists Index, List Detail | /api/lists/\* |
-| ...       | ...      | ...                | ...                      | ...           |
-
-## Phase Relevance
-
-| Phase/SOP                | Status     | Reason                       |
-| ------------------------ | ---------- | ---------------------------- |
-| Phase 4 (AI Integration) | ⏭️ Skip    | No AI features in MVP        |
-| SOP-306 (PWA)            | ⏭️ Skip    | Not needed for this project  |
-| SOP-204 (Authorization)  | ✅ Execute | Multiple user roles required |
-| ...                      | ...        | ...                          |
-
-## Project-Specific Constraints
-
-- {e.g., "Must work offline — PWA with local-first sync"}
-- {e.g., "Budget: free tier only for all services"}
-- {e.g., "Target: mobile-first, Arabic RTL support"}
-
-## Placeholder Resolution
-
-> SOPs use generic placeholders like `[Entity]` and `[Related]` in their
-> code examples. These mean **different things depending on which entity
-> you are currently implementing.** Use the matching card below.
-
-### Global Placeholders (all SOPs)
-
-| Placeholder      | Value          |
-| ---------------- | -------------- |
-| `[App Name]`     | {Project Name} |
-| `[PROJECT_NAME]` | {Project Name} |
-
-### Entity: {EntityA} (e.g., List)
-
-| Placeholder       | Value                       |
-| ----------------- | --------------------------- |
-| `[Entity]`        | {EntityA} (e.g., `List`)    |
-| `[entity]`        | {entityA} (e.g., `list`)    |
-| `[entities]`      | {entitiesA} (e.g., `lists`) |
-| `[Related]`       | {RelatedToA} (e.g., `Item`) |
-| `[RelatedEntity]` | {RelatedToA} (e.g., `Item`) |
-| `[related]`       | {relatedToA} (e.g., `item`) |
-
-### Entity: {EntityB} (e.g., Item)
-
-| Placeholder       | Value                       |
-| ----------------- | --------------------------- |
-| `[Entity]`        | {EntityB} (e.g., `Item`)    |
-| `[entity]`        | {entityB} (e.g., `item`)    |
-| `[entities]`      | {entitiesB} (e.g., `items`) |
-| `[Related]`       | {RelatedToB or — if none}   |
-| `[RelatedEntity]` | {RelatedToB or — if none}   |
-| `[related]`       | {relatedToB or — if none}   |
-
-{Repeat for each entity in the Entity Map above.}
-```
-
-### How the Agent Uses the Execution Brief
+### Agent Rules
 
 1. **Before starting any SOP from Phase 1 onward**, read `/docs/execution-brief.md`
-2. **Resolve placeholders per entity** — when implementing a work unit for entity X, look up the "Entity: X" card in the Placeholder Resolution section and substitute all placeholders accordingly
+2. **Resolve placeholders per entity** — look up the matching entity card
 3. **Apply tech adaptations** — use the correct tools/patterns for this project
 4. **Check phase relevance** — skip SOPs marked ⏭️
-5. **Scope to MVP features** — don't implement features marked as post-MVP
+5. **Scope to MVP features** — don't implement post-MVP features
 
-> **AI Agent Rule:** If the Execution Brief contradicts a generic SOP example, the Brief takes precedence. The SOPs define the _method_; the Brief defines the _subject_.
+> If the Execution Brief contradicts a generic SOP, the Brief takes precedence. SOPs define the _method_; the Brief defines the _subject_.
 >
-> **Placeholder Rule:** Never guess what `[Entity]` or `[Related]` means. Always look up the matching entity card in the Placeholder Resolution section. If there is no card for the entity you are implementing, stop and ask the human to update the Execution Brief.
+> **Placeholder Rule:** Never guess what `[Entity]` or `[Related]` means. Always look up the matching entity card. If no card exists, stop and ask the human.
 
 ---
 
-## Iterative SOP Execution (Complex SOPs)
+## Iterative SOP Execution
 
-Some SOPs involve implementing multiple similar work units (e.g., "implement all pages" or "create all API endpoints"). These **must not** be executed in a single prompt — agents lose context and miss units.
+Some SOPs implement multiple work units (services, pages, API groups). These must NOT be done in a single prompt.
 
 ### Which SOPs Are Iterative
 
-| SOP     | Work Unit      | Iterate Over                                               |
-| ------- | -------------- | ---------------------------------------------------------- |
-| SOP-200 | Service        | Each service class (e.g., ListService, ItemService)        |
-| SOP-201 | Repository     | Each repository class                                      |
-| SOP-202 | Resource Group | Each API resource group (e.g., /api/lists/_, /api/items/_) |
-| SOP-305 | Page           | Each user-facing page                                      |
+| SOP     | Work Unit      | Iterate Over            |
+| ------- | -------------- | ----------------------- |
+| SOP-200 | Service        | Each service class      |
+| SOP-201 | Repository     | Each repository class   |
+| SOP-202 | Resource Group | Each API resource group |
+| SOP-305 | Page           | Each user-facing page   |
 
-### The Iterative Execution Pattern
+### Execution Steps
 
-```
-┌────────────────────────────────────────────────────────────────┐
-│  Step 1: BUILD MANIFEST                                        │
-│  Read the Execution Brief + upstream design docs.              │
-│  List ALL work units that must be implemented.                 │
-│  Present manifest to human for approval.                       │
-├────────────────────────────────────────────────────────────────┤
-│  Step 2: IMPLEMENT ONE UNIT                                    │
-│  For the next unit in the manifest:                            │
-│  - Complete the FULL vertical slice (not just one layer)       │
-│  - Cross-reference the Execution Brief for correct patterns    │
-│  - Verify: does this unit match its design doc / requirement?  │
-├────────────────────────────────────────────────────────────────┤
-│  Step 3: CHECKPOINT                                            │
-│  ⏸️ Stop and present the completed unit to the human:          │
-│  - What was implemented                                        │
-│  - Files created/modified                                      │
-│  - How it maps to requirements                                 │
-│  - Any deviations or decisions made                            │
-│  Wait for approval before proceeding to the next unit.         │
-├────────────────────────────────────────────────────────────────┤
-│  Step 4: REPEAT Steps 2-3 for each remaining unit              │
-├────────────────────────────────────────────────────────────────┤
-│  Step 5: COVERAGE VERIFICATION                                 │
-│  After all units are done:                                     │
-│  - Cross-reference manifest against actual outputs             │
-│  - Flag any units that were missed or partially done           │
-│  - Report coverage: X/Y units complete                         │
-│  ⏸️ Final approval before marking SOP complete.                │
-└────────────────────────────────────────────────────────────────┘
-```
+1. **Build Manifest** — list ALL work units from Execution Brief + upstream docs. Present to human for approval.
+2. **Implement One Unit** — complete full vertical slice. Cross-reference Execution Brief. Verify against design doc.
+3. **Checkpoint** — present completed unit (what was built, files changed, requirement mapping). Await approval.
+4. **Repeat** steps 2–3 for each remaining unit.
+5. **Coverage Verification** — cross-reference manifest against outputs. Report X/Y units complete. Final approval.
 
-### AI Agent Rules for Iterative SOPs
+### Rules
 
-1. **Never skip the manifest step** — The manifest is what prevents forgetting units
-2. **One unit at a time** — Do not start the next unit until the current one is checkpointed
-3. **Full vertical slice** — Each unit must be complete (e.g., for a page: server component + client component + API wiring + loading states + error states)
-4. **Use the Execution Brief** — Don't guess entity names or patterns; read the Brief
-5. **Update AI-SESSION.md** after each unit — Track per-unit progress in the Iterative SOP Progress table
-6. **Coverage check is mandatory** — Don't mark the SOP as complete until coverage is verified
-
-## Understanding the SOP Structure
-
-### Each SOP Contains
-
-```markdown
-# SOP-XXX: Title
-
-## Purpose ← Why this SOP exists
-
-## Scope ← What it covers / doesn't cover
-
-## Prerequisites ← What must be done first (other SOPs, tools)
-
-## Procedure ← Step-by-step instructions (AI follows this)
-
-## Review Checklist ← Verification items
-
-## AI Agent Prompt ← (Optional) Pre-written prompt template
-
-## Outputs ← What files/artifacts this SOP produces
-
-## Related SOPs ← Cross-references
-```
-
-### The AI Agent Should
-
-1. **Read the full SOP** before starting
-2. **Check prerequisites** are satisfied (read output files from previous SOPs)
-3. **Follow the Procedure** section step-by-step
-4. **Produce all Outputs** listed
-5. **Verify against the Review Checklist**
-6. **Update project-checklist.md** — check off completed items for the SOP
-
----
-
-## Getting Started with a New Project
-
-### Step 1: Set Up Project Structure
-
-Copy the SOP framework into your new project:
-
-```bash
-# Create a new project directory
-mkdir my-new-project && cd my-new-project
-
-# Copy both folders as-is
-cp -r /path/to/sops-repo/.prompts .
-cp -r /path/to/sops-repo/.sops .
-```
-
-Resulting structure:
-
-```
-my-new-project/
-├── .prompts/
-│   ├── AI-GUIDE.md       # This guide
-│   └── AI-SESSION.md     # Session tracker (AI manages this)
-└── .sops/
-    ├── README.md         # SOP index
-    ├── templates/        # Project templates
-    ├── phase-0-initialization/
-    └── ...               # Other phases
-```
-
-### Step 2: Start Your First AI Session
-
-Provide this simple prompt to your AI agent:
-
-```markdown
-I'm starting a new project: {PROJECT_NAME}.
-{Brief 1-2 sentence description of what you're building}
-
-Read `.prompts/AI-GUIDE.md` and `.prompts/AI-SESSION.md` to understand the workflow.
-Then begin with SOP-000 (Requirements Gathering).
-```
-
-**The AI will automatically:**
-
-1. Fill in the Project Overview in `AI-SESSION.md`
-2. Extract goals from your description
-3. Read SOP-000 and guide you through requirements gathering
-4. Create the output files
-5. Update the session tracker
-6. Proceed to the next SOP
-
-### Step 3: Continue Through SOPs
-
-For subsequent sessions (or resuming in a new chat):
-
-```markdown
-Continuing work on this project.
-
-Read `.prompts/AI-SESSION.md` to see progress and continue with the next SOP.
-```
-
-Or simply copy the **Session Prompt Template** from `AI-SESSION.md`—the AI keeps it updated with the current state.
+1. Never skip the manifest step
+2. One unit at a time — don't start next until current is checkpointed
+3. Full vertical slice per unit (e.g., server + client + API + loading + error)
+4. Use the Execution Brief — don't guess entity names
+5. Update AI-SESSION.md after each unit
+6. Coverage check is mandatory before marking SOP complete
 
 ---
 
 ## Prompt Patterns
 
-### Pattern 1: Execute a Single SOP
-
-```markdown
-Execute SOP-{XXX}.
-
-Read `.prompts/AI-SESSION.md` for context, then follow the SOP procedure.
-Update the session tracker when complete.
-```
-
-### Pattern 2: Continue From Last Session
-
-```markdown
-Continuing this project.
-
-Read `.prompts/AI-SESSION.md` and proceed with the next incomplete SOP.
-```
-
-### Pattern 3: Execute Multiple Related SOPs
-
-```markdown
-Execute these SOPs in order:
-
-1. SOP-002 (Repository Setup)
-2. SOP-003 (Project Structure)
-3. SOP-004 (Environment Setup)
-
-Update `.prompts/AI-SESSION.md` after each one.
-```
-
-### Pattern 4: Review and Verify
-
-```markdown
-## Context
-
-Project: {name} at `{path}`
-Just completed: SOP-{XXX}
-
-## Task
-
-Verify the outputs against SOP-{XXX}'s Review Checklist.
-
-Read:
-
-- `.sops/phase-X/{SOP-file}.md` (the checklist section)
-- {files that were created}
-
-Report:
-
-- ✅ Items that pass
-- ❌ Items that need attention
-- Recommended fixes
-```
-
-### Pattern 5: Recover Context (New Session)
-
-```markdown
-I'm resuming work on this project.
-
-Read `.prompts/AI-SESSION.md` and summarize:
-
-- What's been completed
-- What's next
-- Any noted issues
-
-Then await my instructions.
-```
-
-### Pattern 6: Execute Iterative SOP
-
-```markdown
-Execute SOP-{XXX} using the iterative pattern.
-
-Read:
-
-- `.prompts/AI-SESSION.md` for context
-- `/docs/execution-brief.md` for project-specific adaptations
-- The SOP file for the procedure
-
-**Step 1:** Build the work unit manifest from the Execution Brief + upstream docs.
-Present it to me for approval before implementing anything.
-
-**Step 2:** After I approve, implement ONE unit at a time.
-After each unit, checkpoint with me — show what was built, what files changed,
-and how it maps to requirements. Wait for my approval before the next unit.
-
-**Step 3:** After all units, run coverage verification against the manifest.
-```
-
----
-
-## 📊 SOP Dependencies Map
-
-Understanding what each SOP needs and produces:
-
-```
-SOP-000 (Requirements)
-    └── outputs: /docs/requirements.md
-            │
-            ▼
-SOP-001 (Tech Stack) ◄── reads requirements
-    └── outputs: /docs/tech-stack.md
-            │
-            ▼
-SOP-002 (Repository) ◄── reads tech stack (for .gitignore)
-    └── outputs: README.md, .gitignore, CONTRIBUTING.md
-            │
-            ▼
-SOP-003 (Structure) ◄── reads tech stack (for folder conventions)
-    └── outputs: folder structure
-            │
-            ▼
-SOP-004 (Environment) ◄── reads structure
-    └── outputs: .env.example, setup docs
-            │
-            ▼
-SOP-005 (Patterns) ◄── reads requirements + tech stack
-    └── outputs: /docs/architecture/design-patterns.md
-            │
-            ▼
-SOP-006 (Code Style) ◄── reads tech stack
-    └── outputs: linter/formatter configs
-            │
-            ▼
-        [Phase 1+]
-```
-
----
-
-## ✅ Best Practices
-
-### For Effective AI Sessions
-
-| Do                               | Don't                               |
-| -------------------------------- | ----------------------------------- |
-| Reference SOP files by path      | Copy-paste SOP content into prompts |
-| Let AI read prerequisite outputs | Summarize previous work yourself    |
-| Use the session tracker          | Rely on chat memory across sessions |
-| Verify outputs match SOP specs   | Assume AI followed everything       |
-| Update tracker after each SOP    | Forget to record progress           |
-
-### For SOP Maintenance
-
-| Do                                    | Don't                       |
-| ------------------------------------- | --------------------------- |
-| Keep Outputs section accurate         | Let outputs become outdated |
-| Update Prerequisites when adding SOPs | Create orphan SOPs          |
-| Include concrete examples in SOPs     | Be vague about expectations |
-| Version control your SOPs             | Make undocumented changes   |
-
-### For Multi-Session Projects
-
-| Do                                 | Don't                            |
-| ---------------------------------- | -------------------------------- |
-| Start with "read the session file" | Assume context carries over      |
-| Record session logs                | Lose track of what was done      |
-| Note deviations and why            | Silently ignore SOP requirements |
-| Checkpoint after each phase        | Do too much in one session       |
-
----
-
-## 🔧 Customizing SOPs for AI
-
-### Adding AI-Friendly Metadata
-
-Consider adding a front-matter block to SOPs:
-
-```markdown
----
-sop_id: "SOP-101"
-phase: 1
-title: "Schema Design"
-prerequisites:
-  - sop: "SOP-100"
-    output: "/docs/tech-stack.md"
-outputs:
-  - "/docs/database/erd.md"
-  - "/migrations/001_initial.sql"
-estimated_tokens: 2000
----
-```
-
-### Structuring Procedures for AI
-
-Write procedures as numbered steps with clear actions:
-
-```markdown
-## Procedure
-
-### 1. Read Prerequisites
-
-- Read `/docs/requirements.md` for data entities
-- Read `/docs/tech-stack.md` for database choice
-
-### 2. Identify Entities
-
-- List all nouns from requirements that need persistence
-- Group related entities
-
-### 3. Design Tables
-
-For each entity:
-
-- Create table with snake_case name (plural)
-- Add required columns: id, created_at, updated_at
-- Define relationships (foreign keys)
-
-### 4. Create Outputs
-
-- Write ERD in Mermaid format to `/docs/database/erd.md`
-- Generate SQL migration to `/migrations/001_initial.sql`
-```
-
----
-
-## 🧪 Testing AI Adherence
-
-After an AI completes an SOP, verify with:
-
-```markdown
-## Verification Task
-
-Check if the outputs from SOP-{XXX} meet requirements:
-
-Read:
-
-- `.sops/phase-X/{SOP-file}.md` (focus on Review Checklist and Outputs)
-- {generated files}
-
-For each checklist item, report:
-
-- ✅ Requirement met (with evidence)
-- ❌ Requirement not met (with specific gap)
-
-Suggest fixes for any failures.
-```
-
----
-
-## 📚 Quick Reference
-
-### Project Structure
-
-```
-{project-root}/
-├── .prompts/
-│   ├── AI-GUIDE.md           # This guide
-│   └── AI-SESSION.md         # Session tracker (AI manages this)
-├── .sops/
-│   ├── README.md             # SOP index
-│   ├── templates/            # Reusable templates
-│   ├── phase-0-initialization/
-│   ├── phase-1-database/
-│   ├── phase-2-backend/
-│   ├── phase-3-frontend/
-│   ├── phase-4-ai-integration/
-│   ├── phase-5-quality/
-│   └── phase-6-deployment/
-├── docs/                     # Generated documentation
-├── src/                      # Source code
-└── ...
-```
-
-### Session Lifecycle
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│ 1. SETUP                                                    │
-│    Copy .prompts/ and .sops/ to new project                 │
-│    User provides project name + description                 │
-├─────────────────────────────────────────────────────────────┤
-│ 2. INITIALIZE (AI)                                          │
-│    AI fills in AI-SESSION.md from user's description        │
-│    AI begins SOP-000                                        │
-├─────────────────────────────────────────────────────────────┤
-│ 3. EXECUTE (AI)                                             │
-│    For each SOP:                                            │
-│    - Read SOP + prerequisites                               │
-│    - Follow Procedure                                       │
-│    - Create Outputs                                         │
-│    - Update AI-SESSION.md                                   │
-├─────────────────────────────────────────────────────────────┤
-│ 4. RESUME (new session)                                     │
-│    AI reads .prompts/AI-SESSION.md                          │
-│    Continues from last incomplete SOP                       │
-├─────────────────────────────────────────────────────────────┤
-│ 5. COMPLETE                                                 │
-│    All SOPs marked ✅                                       │
-│    Project is ready for production                          │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### Key Files
-
-| File                     | Purpose                             |
-| ------------------------ | ----------------------------------- |
-| `.prompts/AI-GUIDE.md`   | This guide                          |
-| `.prompts/AI-SESSION.md` | Active session tracker (AI-managed) |
-| `.sops/README.md`        | SOP index and overview              |
-| `.sops/templates/`       | Reusable project templates          |
-
-### Starting Prompt (Copy This)
-
-```markdown
-I'm starting a new project: {NAME}.
-{One or two sentences describing what you're building}
-
-Read `.prompts/AI-GUIDE.md` to understand the workflow.
-Then initialize `.prompts/AI-SESSION.md` and begin with SOP-000.
-```
+| #   | Pattern                   | When to Use               | Template                                                                                                                             |
+| --- | ------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | **Execute Single SOP**    | Non-iterative SOP         | `Execute SOP-{XXX}. Read .prompts/AI-SESSION.md for context, follow the procedure, update tracker.`                                  |
+| 2   | **Continue Session**      | Resuming work             | `Continuing this project. Read .prompts/AI-SESSION.md and proceed with the next incomplete SOP.`                                     |
+| 3   | **Execute Multiple SOPs** | Related SOPs in sequence  | `Execute SOPs {list} in order. Update .prompts/AI-SESSION.md after each one.`                                                        |
+| 4   | **Review & Verify**       | After SOP completion      | `Verify outputs against SOP-{XXX}'s Review Checklist. Report ✅/❌ per item with fixes.`                                             |
+| 5   | **Recover Context**       | New session, need summary | `Read .prompts/AI-SESSION.md. Summarize: completed, next, issues. Await instructions.`                                               |
+| 6   | **Iterative SOP**         | SOPs 200/201/202/305      | `Execute SOP-{XXX} iteratively. Step 1: build manifest. Step 2: one unit at a time with checkpoints. Step 3: coverage verification.` |
