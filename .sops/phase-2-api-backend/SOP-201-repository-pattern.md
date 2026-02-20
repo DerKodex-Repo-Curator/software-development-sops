@@ -24,7 +24,45 @@ Create a clean abstraction layer between business logic (services) and data stor
 
 ## Procedure
 
-### 1. Define Repository Interfaces
+> 🔁 **This is an Iterative SOP.** See `AI-GUIDE.md` → "Iterative SOP Execution" for the pattern. Work unit = one repository class.
+
+### 1. Build Repository Manifest
+
+Read `/docs/execution-brief.md` for the entity map and `/docs/backend/services.md` for service data needs. Create `/docs/backend/repositories.md`:
+
+```markdown
+# Repository Layer Design
+
+## Repository Manifest
+
+| #   | Repository          | Entity    | Key Queries                      | Dependencies | Status |
+| --- | ------------------- | --------- | -------------------------------- | ------------ | ------ |
+| 1   | UserRepository      | User      | findByEmail, findById            | -            | ⬚      |
+| 2   | [Entity]Repository  | [Entity]  | findByOwner, findByIdWithRelated | -            | ⬚      |
+| 3   | [Related]Repository | [Related] | findByEntity, countByEntity      | -            | ⬚      |
+```
+
+### 2. ✅ Human Approves Manifest
+
+> ⚠️ **CHECKPOINT:** Present the repository manifest to the human. Do not proceed until they confirm:
+>
+> - All entities from the schema have corresponding repositories
+> - Key queries match what services need
+> - No repositories are missing
+
+### 3. Implement Shared Infrastructure
+
+Before iterating on individual repositories, create the shared base:
+
+- Base repository (if using class-based pattern)
+- Transaction wrapper
+- Shared types and query options
+
+### 4. Implement Repositories (One at a Time)
+
+> For EACH repository in the manifest, complete the following sub-steps before moving to the next. After each repository, checkpoint with the human.
+
+#### Sub-step A: Define Repository Interface
 
 Create interfaces that define data access contracts:
 
@@ -39,16 +77,16 @@ export interface I[Entity]Repository {
   findByIdWithRelated(id: string): Promise<[Entity]WithRelated | null>;
   update(id: string, data: Prisma.[Entity]UpdateInput): Promise<[Entity]>;
   delete(id: string): Promise<void>;
-  
+
   // Query operations
   findByOwner(ownerId: string, options?: QueryOptions): Promise<[Entity][]>;
   findSharedWithUser(userId: string): Promise<[Entity][]>;
   countByOwner(ownerId: string): Promise<number>;
-  
+
   // Access control
   hasAccess(entityId: string, userId: string): Promise<boolean>;
   countCollaborators(entityId: string): Promise<number>;
-  
+
   // Sharing (if applicable)
   createInvite(entityId: string, code: string): Promise<void>;
   findByInviteCode(code: string): Promise<[Entity] | null>;
@@ -76,8 +114,8 @@ Create a base class with common functionality:
 
 ```typescript
 // src/repositories/base.repository.ts
-import { prisma } from '@/lib/prisma';
-import type { PrismaClient, Prisma } from '@prisma/client';
+import { prisma } from "@/lib/prisma";
+import type { PrismaClient, Prisma } from "@prisma/client";
 
 export abstract class BaseRepository<T> {
   protected db: PrismaClient;
@@ -105,10 +143,10 @@ Create repository implementations:
 // src/repositories/[entity].repository.ts
 import { prisma } from '@/lib/prisma';
 import type { [Entity], Prisma, PrismaClient } from '@prisma/client';
-import type { 
-  I[Entity]Repository, 
-  [Entity]WithRelated, 
-  QueryOptions 
+import type {
+  I[Entity]Repository,
+  [Entity]WithRelated,
+  QueryOptions
 } from './interfaces/[entity]-repository.interface';
 import { BaseRepository } from './base.repository';
 
@@ -294,15 +332,15 @@ Create central export:
 
 ```typescript
 // src/repositories/index.ts
-export * from './[entity].repository';
-export * from './[related].repository';
-export * from './user.repository';
-export * from './transaction';
+export * from "./[entity].repository";
+export * from "./[related].repository";
+export * from "./user.repository";
+export * from "./transaction";
 
 // Types
-export type * from './interfaces/[entity]-repository.interface';
-export type * from './interfaces/[related]-repository.interface';
-export type * from './interfaces/user-repository.interface';
+export type * from "./interfaces/[entity]-repository.interface";
+export type * from "./interfaces/[related]-repository.interface";
+export type * from "./interfaces/user-repository.interface";
 ```
 
 ### 6. Document Repository Structure
@@ -315,6 +353,7 @@ Create `/docs/backend/repositories.md`:
 ## Overview
 
 Repositories abstract database access, providing:
+
 - Clean separation between services and data storage
 - Easy testing with mock repositories
 - Centralized query logic
@@ -322,22 +361,25 @@ Repositories abstract database access, providing:
 
 ## Repository Inventory
 
-| Repository | Table(s) | Description |
-|------------|----------|-------------|
-| [Entity]Repository | [entity], [entity]_invite, [entity]_collaborator | Entity CRUD and sharing |
-| [Related]Repository | [related] | Related entity operations |
-| UserRepository | user | User data access |
+| Repository          | Table(s)                                           | Description               |
+| ------------------- | -------------------------------------------------- | ------------------------- |
+| [Entity]Repository  | [entity], [entity]\_invite, [entity]\_collaborator | Entity CRUD and sharing   |
+| [Related]Repository | [related]                                          | Related entity operations |
+| UserRepository      | user                                               | User data access          |
 
 ## Query Patterns
 
 ### Pagination
+
 All `findMany` methods support `QueryOptions`:
+
 - `skip`: Number of records to skip
 - `take`: Number of records to return (default: 50)
 - `orderBy`: Field to sort by
 - `order`: 'asc' or 'desc'
 
 ### Transactions
+
 Use `withTransaction()` for multi-repository operations:
 
 ```typescript
@@ -378,25 +420,26 @@ const mockEntityRepo: I[Entity]Repository = {
 ## AI Agent Prompt Template
 
 ```markdown
-Execute SOP-201 (Repository Pattern):
+Execute SOP-201 (Repository Pattern) using the **iterative pattern**.
 
 Read:
+
+- `/docs/execution-brief.md` for project-specific context
 - `prisma/schema.prisma` for data model
 - `/docs/backend/services.md` for service data needs
 
-**Tasks:**
-1. Create repository interfaces in `src/repositories/interfaces/`
-2. Create base repository in `src/repositories/base.repository.ts`
-3. Implement concrete repositories in `src/repositories/`
-4. Create transaction wrapper in `src/repositories/transaction.ts`
-5. Document in `/docs/backend/repositories.md`
+**Step 1:** Build the repository manifest — list every entity that needs a repository.
+Present the manifest for my approval.
 
-**Key principles:**
-- Repositories only handle data access (no business logic)
-- Use interfaces for testability
-- Encapsulate all Prisma queries
-- Support transactions for multi-table operations
-- Replace [Entity] placeholders with your actual domain entities
+**Step 2:** After I approve, implement shared infrastructure (base repository, transactions).
+
+**Step 3:** Implement ONE repository at a time (interface + concrete class).
+After each repository, checkpoint with me showing:
+
+- What queries/methods were implemented
+- Files created/modified
+
+**Step 4:** After all repositories, run coverage verification against the manifest.
 ```
 
 ---

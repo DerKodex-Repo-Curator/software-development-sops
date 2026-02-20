@@ -25,7 +25,47 @@ Implement complete pages that compose components, integrate with APIs, manage pa
 
 ## Procedure
 
-### 1. Page Planning Document
+> 🔁 **This is an Iterative SOP.** See `AI-GUIDE.md` → "Iterative SOP Execution" for the pattern. Work unit = one user-facing page.
+
+### 1. Build Page Manifest
+
+Read `/docs/execution-brief.md` for the entity map and feature scope. Read the wireframes from SOP-302 and the approved visual design from `/docs/frontend/visual-design.md`. Create `/docs/frontend/page-manifest.md`:
+
+```markdown
+# Page Manifest
+
+| #   | Page            | Route              | API Endpoints Used      | Key Components            | Priority | Status |
+| --- | --------------- | ------------------ | ----------------------- | ------------------------- | -------- | ------ |
+| 1   | Login           | `/login`           | POST /api/auth/login    | LoginForm                 | Must     | ⬚      |
+| 2   | Dashboard       | `/`                | GET /api/[entities]     | EntityCard, StatsWidget   | Must     | ⬚      |
+| 3   | [Entity] List   | `/[entities]`      | GET /api/[entities]     | EntityList, FilterBar     | Must     | ⬚      |
+| 4   | [Entity] Detail | `/[entities]/[id]` | GET /api/[entities]/:id | EntityDetail, RelatedList | Must     | ⬚      |
+| 5   | Settings        | `/settings`        | GET/PATCH /api/users/me | SettingsForm              | Should   | ⬚      |
+```
+
+### 2. ✅ Human Approves Manifest
+
+> ⚠️ **CHECKPOINT:** Present the page manifest to the human. Do not proceed until they confirm:
+>
+> - All pages from the wireframes are listed
+> - API endpoints are correctly mapped to each page
+> - Priority order is correct (implement in this order)
+> - No pages are missing
+
+### 3. Implement Shared Infrastructure
+
+Before iterating on individual pages, implement the shared foundation:
+
+- Root layout (`app/layout.tsx`) with theme, fonts, and providers
+- Navigation component (sidebar, header, or bottom nav)
+- Shared hooks (auth, theme, etc.)
+- Common page patterns (empty states, error boundaries)
+
+### 4. Implement Pages (One at a Time)
+
+> For EACH page in the manifest (in priority order), complete ALL of the following sub-steps before moving to the next page. After each page, checkpoint with the human.
+
+#### Sub-step A: Page Planning Document
 
 Create `/docs/frontend/pages/[page-name].md`:
 
@@ -33,35 +73,36 @@ Create `/docs/frontend/pages/[page-name].md`:
 # Page: [Entity] Detail
 
 ## Overview
+
 - **Route:** `/[entities]/[id]`
 - **Purpose:** Display and manage a single [entity] with related data
 - **Wireframe:** See `/docs/frontend/ui-design/[entity]-detail.md`
 
 ## Data Requirements
 
-| Data | Source | Loading State | Error State |
-|------|--------|---------------|-------------|
-| [Entity] details | `GET /api/[entities]/:id` | Skeleton | 404 page |
-| Related items | `GET /api/[entities]/:id/related` | Item skeletons | Retry button |
-| User permissions | Derived from [entity].ownerId | N/A | N/A |
+| Data             | Source                            | Loading State  | Error State  |
+| ---------------- | --------------------------------- | -------------- | ------------ |
+| [Entity] details | `GET /api/[entities]/:id`         | Skeleton       | 404 page     |
+| Related items    | `GET /api/[entities]/:id/related` | Item skeletons | Retry button |
+| User permissions | Derived from [entity].ownerId     | N/A            | N/A          |
 
 ## State Management
 
-| State | Type | Scope | Persistence |
-|-------|------|-------|-------------|
-| selectedItems | Set<string> | Page | None |
-| expandedSections | Set<string> | Page | localStorage |
-| isEditing | boolean | Page | None |
-| optimisticUpdates | [Entity][] | Page | None |
+| State             | Type        | Scope | Persistence  |
+| ----------------- | ----------- | ----- | ------------ |
+| selectedItems     | Set<string> | Page  | None         |
+| expandedSections  | Set<string> | Page  | localStorage |
+| isEditing         | boolean     | Page  | None         |
+| optimisticUpdates | [Entity][]  | Page  | None         |
 
 ## User Interactions
 
-| Action | Handler | API Call | Optimistic Update |
-|--------|---------|----------|-------------------|
-| Update item | handleUpdate | PATCH /api/[entities]/:id | Yes |
-| Add related | handleAdd | POST /api/[entities]/:id/related | Yes |
-| Delete item | handleDelete | DELETE /api/[entities]/:id | Yes |
-| Reorder | handleReorder | PATCH /api/[entities]/:id/reorder | Yes |
+| Action      | Handler       | API Call                          | Optimistic Update |
+| ----------- | ------------- | --------------------------------- | ----------------- |
+| Update item | handleUpdate  | PATCH /api/[entities]/:id         | Yes               |
+| Add related | handleAdd     | POST /api/[entities]/:id/related  | Yes               |
+| Delete item | handleDelete  | DELETE /api/[entities]/:id        | Yes               |
+| Reorder     | handleReorder | PATCH /api/[entities]/:id/reorder | Yes               |
 
 ## Components Used
 
@@ -94,7 +135,7 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps) {
   const { id } = await params;
   const entity = await get[Entity](id).catch(() => null);
-  
+
   return {
     title: entity ? `${entity.name} | [App Name]` : '[Entity] Not Found',
     description: entity?.description || 'Manage your [entity]',
@@ -104,7 +145,7 @@ export async function generateMetadata({ params }: PageProps) {
 // Page component
 export default async function [Entity]Page({ params }: PageProps) {
   const { id } = await params;
-  
+
   // Validate entity exists (for 404)
   const entity = await get[Entity](id).catch(() => null);
   if (!entity) {
@@ -144,11 +185,11 @@ interface [Entity]PageContentProps {
 export function [Entity]PageContent({ entityId, initialData }: [Entity]PageContentProps) {
   // Server state (React Query)
   const { data, isLoading, error, refetch } = use[Entity](entityId);
-  
+
   // Mutations
   const updateEntity = useUpdate[Entity](entityId);
   const deleteEntity = useDelete[Entity](entityId);
-  
+
   // Local UI state
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
     () => new Set(['section1', 'section2']) // Default expanded
@@ -502,6 +543,45 @@ app/
 │       └── error.tsx               # Error boundary
 ```
 
+#### Sub-step G: Page Checkpoint
+
+> ⏸️ **CHECKPOINT:** Present the completed page to the human:
+>
+> - Screenshots or description of what was built
+> - Files created/modified
+> - How it maps to the wireframe and requirements
+> - API integration status (which endpoints are wired)
+> - Any deviations or decisions made
+>
+> Wait for approval before proceeding to the next page.
+
+### 5. Coverage Verification
+
+After all pages are implemented:
+
+```markdown
+## Page Coverage Report
+
+| #   | Page      | Route  | Status | Files                   | API Wired |
+| --- | --------- | ------ | ------ | ----------------------- | --------- |
+| 1   | Login     | /login | ✅     | app/login/page.tsx, ... | ✅        |
+| 2   | Dashboard | /      | ✅     | app/page.tsx, ...       | ✅        |
+| ... | ...       | ...    | ...    | ...                     | ...       |
+
+**Coverage:** X/Y pages complete
+**Missing:** {none or list}
+```
+
+### 6. Cross-Page Integration
+
+Verify all page-to-page flows work:
+
+- Navigation between all pages
+- Shared state consistency (e.g., user context, theme)
+- Deep link support (direct URL access)
+- Back/forward browser navigation
+- Build check: `npm run build` passes
+
 ---
 
 ## Review Checklist
@@ -522,30 +602,28 @@ app/
 ## AI Agent Prompt Template
 
 ```markdown
-Execute SOP-305 (Page Implementation):
+Execute SOP-305 (Page Implementation) using the **iterative pattern**.
 
 Read:
+
+- `/docs/execution-brief.md` for project-specific context
+- `/docs/frontend/visual-design.md` for approved design direction
 - `/docs/frontend/ui-design/[feature].md` for wireframes
-- `/docs/frontend/pages/[page].md` for page planning
 - `src/components/` for available components
 - `src/hooks/` for available hooks
 
-**Tasks:**
-1. Create page planning document
-2. Implement server component (`page.tsx`)
-3. Implement client content component
-4. Create loading skeleton
-5. Add error and not-found pages
-6. Set up layout if needed
-7. Implement page-level state management
-8. Wire up navigation
+**Step 1:** Build the page manifest — list ALL pages with their routes,
+API endpoints, and key components. Present for my approval.
 
-**Key principles:**
-- Server components for data fetching
-- Client components for interactivity
-- Optimistic updates for better UX
-- Proper loading and error states
-- Replace [Entity] placeholders with your actual domain entities
+**Step 2:** After I approve, implement shared infrastructure first
+(layouts, navigation, shared hooks).
+
+**Step 3:** Implement ONE page at a time (full vertical slice:
+server component + client component + API wiring + loading + error states).
+After each page, checkpoint with me showing what was built.
+
+**Step 4:** After all pages, run coverage verification and test
+cross-page navigation.
 ```
 
 ---

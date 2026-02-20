@@ -24,58 +24,74 @@ Design RESTful APIs that are consistent, intuitive, and well-documented. Good AP
 
 ## Procedure
 
-### 1. Resource Identification
+> 🔁 **This is an Iterative SOP.** See `AI-GUIDE.md` → "Iterative SOP Execution" for the pattern. Work unit = one API resource group.
 
-Map database entities to API resources:
+### 1. Build Resource Manifest
 
-| Entity | Resource | Base Path |
-|--------|----------|-----------|
-| User | users | `/api/users` |
-| Product | products | `/api/products` |
-| Order | orders | `/api/orders` |
-| Category | categories | `/api/categories` |
+Read `/docs/execution-brief.md` for the entity map, then map database entities to API resources:
+
+| #   | Entity   | Resource   | Base Path         | Methods                  | Status |
+| --- | -------- | ---------- | ----------------- | ------------------------ | ------ |
+| 1   | User     | users      | `/api/users`      | GET, PATCH, DELETE       | ⬚      |
+| 2   | Product  | products   | `/api/products`   | GET, POST, PATCH, DELETE | ⬚      |
+| 3   | Order    | orders     | `/api/orders`     | GET, POST, PATCH         | ⬚      |
+| 4   | Category | categories | `/api/categories` | GET                      | ⬚      |
+
+### 2. ✅ Human Approves Resource Manifest
+
+> ⚠️ **CHECKPOINT:** Present the resource manifest to the human. Do not proceed until they confirm:
+>
+> - All entities that need API exposure are listed
+> - Base paths are correct
+> - HTTP methods are appropriate
+> - No resources are missing
 
 ### 2. HTTP Method Conventions
 
-| Method | Purpose | Path | Example |
-|--------|---------|------|---------|
-| `GET` | Read (list) | `/resources` | Get all products |
-| `GET` | Read (single) | `/resources/:id` | Get product by ID |
-| `POST` | Create | `/resources` | Create new product |
-| `PUT` | Replace | `/resources/:id` | Replace entire product |
-| `PATCH` | Update | `/resources/:id` | Update product fields |
-| `DELETE` | Remove | `/resources/:id` | Delete product |
+| Method   | Purpose       | Path             | Example                |
+| -------- | ------------- | ---------------- | ---------------------- |
+| `GET`    | Read (list)   | `/resources`     | Get all products       |
+| `GET`    | Read (single) | `/resources/:id` | Get product by ID      |
+| `POST`   | Create        | `/resources`     | Create new product     |
+| `PUT`    | Replace       | `/resources/:id` | Replace entire product |
+| `PATCH`  | Update        | `/resources/:id` | Update product fields  |
+| `DELETE` | Remove        | `/resources/:id` | Delete product         |
 
 ### 3. URL Path Conventions
 
 **Do:**
+
 - Use nouns for resources: `/products`, `/users`
 - Use plural names: `/products` not `/product`
 - Use kebab-case: `/order-items` not `/orderItems`
 - Nest logically: `/users/:id/orders`
 
 **Don't:**
+
 - Use verbs in paths: ~~`/getProducts`~~
 - Mix singular/plural: ~~`/product/:id/items`~~
 - Go too deep: ~~`/users/:id/orders/:id/items/:id/reviews`~~
 
 ### 4. Query Parameter Conventions
 
-| Purpose | Parameter | Example |
-|---------|-----------|---------|
-| **Pagination** | `page`, `limit` | `?page=2&limit=20` |
-| **Sorting** | `sort`, `order` | `?sort=createdAt&order=desc` |
-| **Filtering** | Field name | `?status=active&category=electronics` |
-| **Searching** | `q` or `search` | `?q=wireless+headphones` |
-| **Field selection** | `fields` | `?fields=id,name,price` |
-| **Include relations** | `include` | `?include=category,reviews` |
+| Purpose               | Parameter       | Example                               |
+| --------------------- | --------------- | ------------------------------------- |
+| **Pagination**        | `page`, `limit` | `?page=2&limit=20`                    |
+| **Sorting**           | `sort`, `order` | `?sort=createdAt&order=desc`          |
+| **Filtering**         | Field name      | `?status=active&category=electronics` |
+| **Searching**         | `q` or `search` | `?q=wireless+headphones`              |
+| **Field selection**   | `fields`        | `?fields=id,name,price`               |
+| **Include relations** | `include`       | `?include=category,reviews`           |
 
 ### 5. Response Format Standards
 
 **Success Response:**
+
 ```json
 {
-  "data": { /* resource or array */ },
+  "data": {
+    /* resource or array */
+  },
   "meta": {
     "page": 1,
     "limit": 20,
@@ -86,6 +102,7 @@ Map database entities to API resources:
 ```
 
 **Single Resource:**
+
 ```json
 {
   "data": {
@@ -98,6 +115,7 @@ Map database entities to API resources:
 ```
 
 **Collection:**
+
 ```json
 {
   "data": [
@@ -114,18 +132,18 @@ Map database entities to API resources:
 
 ### 6. Status Code Usage
 
-| Code | Meaning | Use Case |
-|------|---------|----------|
-| `200` | OK | Successful GET, PUT, PATCH |
-| `201` | Created | Successful POST |
-| `204` | No Content | Successful DELETE |
-| `400` | Bad Request | Validation error |
-| `401` | Unauthorized | Missing/invalid auth |
-| `403` | Forbidden | Insufficient permissions |
-| `404` | Not Found | Resource doesn't exist |
-| `409` | Conflict | Duplicate/constraint violation |
-| `422` | Unprocessable | Business logic error |
-| `500` | Server Error | Unexpected error |
+| Code  | Meaning       | Use Case                       |
+| ----- | ------------- | ------------------------------ |
+| `200` | OK            | Successful GET, PUT, PATCH     |
+| `201` | Created       | Successful POST                |
+| `204` | No Content    | Successful DELETE              |
+| `400` | Bad Request   | Validation error               |
+| `401` | Unauthorized  | Missing/invalid auth           |
+| `403` | Forbidden     | Insufficient permissions       |
+| `404` | Not Found     | Resource doesn't exist         |
+| `409` | Conflict      | Duplicate/constraint violation |
+| `422` | Unprocessable | Business logic error           |
+| `500` | Server Error  | Unexpected error               |
 
 ### 7. Design API Endpoints
 
@@ -136,30 +154,30 @@ Create `/docs/api/endpoints.md`:
 
 ## Authentication
 
-| Method | Path | Description | Auth |
-|--------|------|-------------|------|
-| POST | /api/auth/register | Create account | No |
-| POST | /api/auth/login | Login | No |
-| POST | /api/auth/logout | Logout | Yes |
-| GET | /api/auth/me | Get current user | Yes |
+| Method | Path               | Description      | Auth |
+| ------ | ------------------ | ---------------- | ---- |
+| POST   | /api/auth/register | Create account   | No   |
+| POST   | /api/auth/login    | Login            | No   |
+| POST   | /api/auth/logout   | Logout           | Yes  |
+| GET    | /api/auth/me       | Get current user | Yes  |
 
 ## Users
 
-| Method | Path | Description | Auth | Role |
-|--------|------|-------------|------|------|
-| GET | /api/users | List users | Yes | Admin |
-| GET | /api/users/:id | Get user | Yes | Self/Admin |
-| PATCH | /api/users/:id | Update user | Yes | Self/Admin |
-| DELETE | /api/users/:id | Delete user | Yes | Admin |
+| Method | Path           | Description | Auth | Role       |
+| ------ | -------------- | ----------- | ---- | ---------- |
+| GET    | /api/users     | List users  | Yes  | Admin      |
+| GET    | /api/users/:id | Get user    | Yes  | Self/Admin |
+| PATCH  | /api/users/:id | Update user | Yes  | Self/Admin |
+| DELETE | /api/users/:id | Delete user | Yes  | Admin      |
 
 ## Products
 
-| Method | Path | Description | Auth |
-|--------|------|-------------|------|
-| GET | /api/products | List products | No |
-| GET | /api/products/:id | Get product | No |
-| POST | /api/products | Create product | Admin |
-| PATCH | /api/products/:id | Update product | Admin |
+| Method | Path              | Description    | Auth  |
+| ------ | ----------------- | -------------- | ----- |
+| GET    | /api/products     | List products  | No    |
+| GET    | /api/products/:id | Get product    | No    |
+| POST   | /api/products     | Create product | Admin |
+| PATCH  | /api/products/:id | Update product | Admin |
 | DELETE | /api/products/:id | Delete product | Admin |
 
 ### Query Parameters
@@ -173,12 +191,12 @@ Create `/docs/api/endpoints.md`:
 
 ## Orders
 
-| Method | Path | Description | Auth |
-|--------|------|-------------|------|
-| GET | /api/orders | List user's orders | Yes |
-| GET | /api/orders/:id | Get order details | Yes |
-| POST | /api/orders | Create order | Yes |
-| PATCH | /api/orders/:id | Update order status | Admin |
+| Method | Path            | Description         | Auth  |
+| ------ | --------------- | ------------------- | ----- |
+| GET    | /api/orders     | List user's orders  | Yes   |
+| GET    | /api/orders/:id | Get order details   | Yes   |
+| POST   | /api/orders     | Create order        | Yes   |
+| PATCH  | /api/orders/:id | Update order status | Admin |
 ```
 
 ### 8. Create OpenAPI Specification
@@ -186,6 +204,7 @@ Create `/docs/api/endpoints.md`:
 > **📄 Template:** Copy [`.sops/templates/api-design-template.yaml`](../templates/api-design-template.yaml) to `/docs/api/openapi.yaml` and customize for your project.
 
 The template includes:
+
 - Server configuration (dev/prod)
 - Common security schemes (JWT Bearer)
 - Reusable response components (errors, pagination)
@@ -208,7 +227,7 @@ paths:
     get:
       summary: List resources
       responses:
-        '200':
+        "200":
           description: Success
     post:
       summary: Create resource
@@ -217,9 +236,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateResource'
+              $ref: "#/components/schemas/CreateResource"
       responses:
-        '201':
+        "201":
           description: Created
 
 components:
@@ -234,12 +253,14 @@ components:
 ### 9. API Versioning Strategy
 
 **Recommended: URL Path Versioning**
+
 ```
 /api/v1/products
 /api/v2/products
 ```
 
 For most projects, start without versioning and add when needed:
+
 ```
 /api/products  → /api/v1/products (when v2 is introduced)
 ```
@@ -261,20 +282,28 @@ For most projects, start without versioning and add when needed:
 
 ## AI Agent Prompt Template
 
-```
-Design the REST API for this project.
+```markdown
+Execute SOP-202 (API Design) using the **iterative pattern**.
 
 Read:
+
+- `/docs/execution-brief.md` for project-specific context
 - `/docs/requirements.md` for features
 - `/docs/database/schema.md` for data model
 - `.sops/templates/api-design-template.yaml` as OpenAPI starting point
 
-Execute SOP-202 (API Design):
-1. Identify resources from the data model
-2. Design endpoints for each resource
-3. Define request/response formats
-4. Create OpenAPI specification (copy template to /docs/api/openapi.yaml)
-5. Document in /docs/api/endpoints.md and /docs/api/openapi.yaml
+**Step 1:** Build the resource manifest — list every API resource group.
+Present the manifest for my approval.
+
+**Step 2:** After I approve, design endpoints for ONE resource group at a time.
+After each resource group, checkpoint with me showing:
+
+- Endpoints with methods, paths, descriptions
+- Request/response format for each endpoint
+- Query parameters and status codes
+
+**Step 3:** After all resource groups, create the unified OpenAPI specification.
+Present the complete API design for final review.
 ```
 
 ---
@@ -289,7 +318,7 @@ Execute SOP-202 (API Design):
 ## Related SOPs
 
 - **SOP-101:** Schema Design (data model → resources)
-- **SOP-203: Authentication (securing endpoints)
+- \*\*SOP-203: Authentication (securing endpoints)
 - **SOP-204:** Authorization (access control)
-- **SOP-205: Error Handling (error responses)
-- **SOP-206: Validation (input validation)
+- \*\*SOP-205: Error Handling (error responses)
+- \*\*SOP-206: Validation (input validation)

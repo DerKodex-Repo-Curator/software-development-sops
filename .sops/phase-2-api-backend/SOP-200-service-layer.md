@@ -24,31 +24,42 @@ Implement the core business logic and features of the application. The service l
 
 ## Procedure
 
-### 1. Map User Stories to Services
+> 🔁 **This is an Iterative SOP.** See `AI-GUIDE.md` → "Iterative SOP Execution" for the pattern. Work unit = one service class.
 
-Create `/docs/backend/services.md`:
+### 1. Build Service Manifest
+
+Read `/docs/execution-brief.md` for the entity map and feature scope. Then create `/docs/backend/services.md`:
 
 ```markdown
 # Service Layer Design
 
 ## Service Mapping
 
-| User Story | Service | Method | Description |
-|------------|---------|--------|-------------|
-| US-001: User can register | AuthService | register() | Create account, hash password, send verification |
-| US-002: User can login | AuthService | login() | Validate credentials, issue token |
-| US-XXX: [User story] | [Entity]Service | [action]() | [Description of business logic] |
+| User Story                | Service         | Method     | Description                                      |
+| ------------------------- | --------------- | ---------- | ------------------------------------------------ |
+| US-001: User can register | AuthService     | register() | Create account, hash password, send verification |
+| US-002: User can login    | AuthService     | login()    | Validate credentials, issue token                |
+| US-XXX: [User story]      | [Entity]Service | [action]() | [Description of business logic]                  |
 
-## Service Inventory
+## Service Manifest
 
-| Service | Responsibility | Dependencies |
-|---------|---------------|--------------|
-| AuthService | User authentication & registration | UserRepository, EmailService |
-| UserService | User profile management | UserRepository |
-| [Entity]Service | [Entity] operations | [Entity]Repository, [Related]Repository |
+| #   | Service         | Responsibility                     | Dependencies                 | Methods                   | Status |
+| --- | --------------- | ---------------------------------- | ---------------------------- | ------------------------- | ------ |
+| 1   | AuthService     | User authentication & registration | UserRepository, EmailService | register, login, logout   | ⬚      |
+| 2   | UserService     | User profile management            | UserRepository               | getProfile, updateProfile | ⬚      |
+| 3   | [Entity]Service | [Entity] operations                | [Entity]Repository           | [methods]                 | ⬚      |
 ```
 
-### 2. Define Service Interfaces
+### 2. ✅ Human Approves Manifest
+
+> ⚠️ **CHECKPOINT:** Present the service manifest to the human. Do not proceed until they confirm:
+>
+> - All user stories are mapped to at least one service method
+> - No services are missing
+> - Service responsibilities are correct
+> - Priority/order is agreed upon
+
+### 3. Implement Services (One at a Time)
 
 Create service interfaces that define the contract:
 
@@ -75,21 +86,23 @@ export interface I[Entity]Service {
   getByUser(userId: string): Promise<[Entity][]>;
   update(id: string, userId: string, data: Update[Entity]Input): Promise<[Entity]>;
   delete(id: string, userId: string): Promise<void>;
-  
+
   // Related entity operations (if applicable)
   addRelated(entityId: string, data: CreateRelatedInput): Promise<[RelatedEntity]>;
   removeRelated(entityId: string, relatedId: string): Promise<void>;
-  
+
   // Sharing/collaboration (if applicable)
   share(entityId: string, ownerId: string, targetEmail: string): Promise<void>;
-  
+
   // Domain-specific operations
   duplicate(id: string, userId: string, newName: string): Promise<[Entity]>;
   archive(id: string, userId: string): Promise<[Entity]>;
 }
 ```
 
-### 3. Implement Service Classes
+### 3. Implement Services (contd.)
+
+> For EACH service in the manifest, complete the following sub-steps before moving to the next service. After each service, checkpoint with the human.
 
 Create services that implement business logic:
 
@@ -127,7 +140,7 @@ export class [Entity]Service implements I[Entity]Service {
 
   async getById(id: string, userId: string): Promise<[Entity] | null> {
     const entity = await this.entityRepo.findById(id);
-    
+
     if (!entity) {
       throw new NotFoundError('[Entity] not found');
     }
@@ -165,7 +178,7 @@ export class [Entity]Service implements I[Entity]Service {
 
   async share(entityId: string, ownerId: string, email: string): Promise<void> {
     const entity = await this.entityRepo.findById(entityId);
-    
+
     if (!entity) {
       throw new NotFoundError('[Entity] not found');
     }
@@ -263,26 +276,26 @@ Create `/docs/backend/business-rules.md`:
 
 ## [Entity] Rules
 
-| Rule ID | Rule | Enforcement |
-|---------|------|-------------|
+| Rule ID | Rule                                      | Enforcement              |
+| ------- | ----------------------------------------- | ------------------------ |
 | ENT-001 | User can have maximum N active [entities] | [Entity]Service.create() |
-| ENT-002 | Maximum N collaborators per [entity] | [Entity]Service.share() |
-| ENT-003 | Only owner can delete | [Entity]Service.delete() |
+| ENT-002 | Maximum N collaborators per [entity]      | [Entity]Service.share()  |
+| ENT-003 | Only owner can delete                     | [Entity]Service.delete() |
 | ENT-004 | Collaborators have read/write, not delete | Authorization middleware |
 
 ## [Related Entity] Rules
 
-| Rule ID | Rule | Enforcement |
-|---------|------|-------------|
+| Rule ID | Rule                          | Enforcement                  |
+| ------- | ----------------------------- | ---------------------------- |
 | REL-001 | Must belong to valid [entity] | [Entity]Service.addRelated() |
-| REL-002 | Duplicate handling defined | [Entity]Service.addRelated() |
+| REL-002 | Duplicate handling defined    | [Entity]Service.addRelated() |
 
 ## User Rules
 
-| Rule ID | Rule | Enforcement |
-|---------|------|-------------|
+| Rule ID  | Rule                               | Enforcement               |
+| -------- | ---------------------------------- | ------------------------- |
 | USER-001 | Email must be verified for sharing | AuthService.verifyEmail() |
-| USER-002 | Password minimum 8 characters | Validation schema |
+| USER-002 | Password minimum 8 characters      | Validation schema         |
 ```
 
 ### 6. Traceability Matrix
@@ -292,11 +305,11 @@ Create `/docs/backend/traceability.md`:
 ```markdown
 # Requirements Traceability
 
-| User Story | Service Method | Repository Method | API Endpoint | Test |
-|------------|---------------|-------------------|--------------|------|
-| US-001 | AuthService.register() | UserRepo.create() | POST /api/auth/register | auth.test.ts |
-| US-002 | AuthService.login() | UserRepo.findByEmail() | POST /api/auth/login | auth.test.ts |
-| US-XXX | [Entity]Service.[method]() | [Entity]Repo.[method]() | [METHOD] /api/[entities] | [entity].test.ts |
+| User Story | Service Method             | Repository Method       | API Endpoint             | Test             |
+| ---------- | -------------------------- | ----------------------- | ------------------------ | ---------------- |
+| US-001     | AuthService.register()     | UserRepo.create()       | POST /api/auth/register  | auth.test.ts     |
+| US-002     | AuthService.login()        | UserRepo.findByEmail()  | POST /api/auth/login     | auth.test.ts     |
+| US-XXX     | [Entity]Service.[method]() | [Entity]Repo.[method]() | [METHOD] /api/[entities] | [entity].test.ts |
 ```
 
 ---
@@ -316,25 +329,26 @@ Create `/docs/backend/traceability.md`:
 ## AI Agent Prompt Template
 
 ```markdown
-Execute SOP-200 (Service Layer):
+Execute SOP-200 (Service Layer) using the **iterative pattern**.
 
 Read:
+
+- `/docs/execution-brief.md` for project-specific context
 - `/docs/requirements.md` for user stories
 - `/docs/database/schema.md` for data model
 - `/docs/architecture/design-patterns.md` for service patterns
 
-**Tasks:**
-1. Map each user story to service method(s)
-2. Create service interfaces in `src/services/interfaces/`
-3. Implement service classes in `src/services/`
-4. Document business rules in `/docs/backend/business-rules.md`
-5. Create traceability matrix in `/docs/backend/traceability.md`
+**Step 1:** Build the service manifest — map every user story to service methods.
+Present the manifest for my approval.
 
-**Key principles:**
-- Services contain business logic, not just data access
-- Every user story must trace to at least one service method
-- Business rules must be documented and code-referenced
-- Replace [Entity] placeholders with your actual domain entities
+**Step 2:** After I approve, implement ONE service at a time (interface + class + business rules).
+After each service, checkpoint with me showing:
+
+- What methods were implemented
+- What business rules are enforced
+- Files created/modified
+
+**Step 3:** After all services, update the traceability matrix and run coverage verification.
 ```
 
 ---

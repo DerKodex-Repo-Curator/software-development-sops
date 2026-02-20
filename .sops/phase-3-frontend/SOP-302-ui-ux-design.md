@@ -28,13 +28,14 @@ Plan and design the user interface before implementation. This SOP bridges requi
 
 The AI adapts based on developer preference:
 
-| Input Level | Developer Provides | AI Generates |
-|-------------|-------------------|--------------|
-| **Minimal** | User stories only | Full wireframes, flows, component breakdown |
-| **Moderate** | Rough sketches or descriptions | Refined wireframes, component suggestions |
-| **Detailed** | Figma designs or detailed specs | Implementation plan, code structure |
+| Input Level  | Developer Provides              | AI Generates                                |
+| ------------ | ------------------------------- | ------------------------------------------- |
+| **Minimal**  | User stories only               | Full wireframes, flows, component breakdown |
+| **Moderate** | Rough sketches or descriptions  | Refined wireframes, component suggestions   |
+| **Detailed** | Figma designs or detailed specs | Implementation plan, code structure         |
 
 **AI Prompt to Developer:**
+
 > "For this feature, would you like me to:
 > A) Design the UI from scratch based on requirements
 > B) Refine rough ideas you describe
@@ -52,13 +53,14 @@ Create `/docs/frontend/ui-analysis.md`:
 
 ### User Stories → UI Requirements
 
-| Story | UI Implications | Components Needed | Interactions |
-|-------|-----------------|-------------------|--------------|
-| US-XXX: [User can perform action] | [UI elements needed] | [Component1], [Component2] | [User interaction flow] |
-| US-XXX: [User can view data] | [Display requirements] | [DataDisplay], [Container] | [Load → Display → Interact] |
-| US-XXX: [User can modify data] | [Edit interface needed] | [Form], [Input], [Button] | [Click → Edit → Submit → Feedback] |
+| Story                             | UI Implications         | Components Needed          | Interactions                       |
+| --------------------------------- | ----------------------- | -------------------------- | ---------------------------------- |
+| US-XXX: [User can perform action] | [UI elements needed]    | [Component1], [Component2] | [User interaction flow]            |
+| US-XXX: [User can view data]      | [Display requirements]  | [DataDisplay], [Container] | [Load → Display → Interact]        |
+| US-XXX: [User can modify data]    | [Edit interface needed] | [Form], [Input], [Button]  | [Click → Edit → Submit → Feedback] |
 
 ### Derived UI Requirements
+
 - [Requirement 1 based on user stories]
 - [Requirement 2 based on user stories]
 - [Accessibility consideration]
@@ -74,30 +76,30 @@ Document key user journeys:
 
 ### Flow 1: [Primary Action]
 
-┌─────────────┐     ┌──────────────┐     ┌─────────────┐     ┌──────────────┐
-│  [Step 1]   │ ──► │   [Step 2]   │ ──► │  [Step 3]   │ ──► │   [Step 4]   │
-└─────────────┘     └──────────────┘     └─────────────┘     └──────────────┘
-                                                                     │
-                                                                     ▼
-                                              ┌──────────────────────────────┐
-                                              │  [Success state with:        │
-                                              │  - Feedback element 1]       │
-                                              │  - Feedback element 2]       │
-                                              └──────────────────────────────┘
+┌─────────────┐ ┌──────────────┐ ┌─────────────┐ ┌──────────────┐
+│ [Step 1] │ ──► │ [Step 2] │ ──► │ [Step 3] │ ──► │ [Step 4] │
+└─────────────┘ └──────────────┘ └─────────────┘ └──────────────┘
+│
+▼
+┌──────────────────────────────┐
+│ [Success state with: │
+│ - Feedback element 1] │
+│ - Feedback element 2] │
+└──────────────────────────────┘
 
 ### Flow 2: [Secondary Action]
 
-┌─────────────┐     ┌──────────────┐     ┌─────────────────┐
-│  [Step 1]   │ ──► │   [Step 2]   │ ──► │  [Modal/Dialog] │
-└─────────────┘     └──────────────┘     └─────────────────┘
-                                                  │
-                    ┌─────────────────────────────┴───────────────────────────┐
-                    │                                                         │
-                    ▼                                                         ▼
-          ┌─────────────────┐                                      ┌───────────────────┐
-          │  [Option A]     │                                      │  [Option B]       │
-          │  → [Result A]   │                                      │  → [Result B]     │
-          └─────────────────┘                                      └───────────────────┘
+┌─────────────┐ ┌──────────────┐ ┌─────────────────┐
+│ [Step 1] │ ──► │ [Step 2] │ ──► │ [Modal/Dialog] │
+└─────────────┘ └──────────────┘ └─────────────────┘
+│
+┌─────────────────────────────┴───────────────────────────┐
+│ │
+▼ ▼
+┌─────────────────┐ ┌───────────────────┐
+│ [Option A] │ │ [Option B] │
+│ → [Result A] │ │ → [Result B] │
+└─────────────────┘ └───────────────────┘
 ```
 
 ### 4. Design Wireframes (ASCII/Text-Based)
@@ -110,49 +112,49 @@ For AI-driven design, use text-based wireframes:
 ### Screen: [Main View] (Mobile)
 
 ┌───────────────────────────────────────┐
-│ ◄ Back    [Title]                 ⋮   │  ← Header with actions
+│ ◄ Back [Title] ⋮ │ ← Header with actions
 ├───────────────────────────────────────┤
 │ ┌───────────────────────────────────┐ │
-│ │ 🔍 [Search/Input]             [+] │ │  ← Primary input
+│ │ 🔍 [Search/Input] [+] │ │ ← Primary input
 │ └───────────────────────────────────┘ │
 ├───────────────────────────────────────┤
-│                                       │
-│ 📁 [SECTION 1] (N)              [▼]   │  ← Section header
+│ │
+│ 📁 [SECTION 1] (N) [▼] │ ← Section header
 │ ┌───────────────────────────────────┐ │
-│ │ ○ [Item 1]                 [meta] │ │  ← List item
-│ │ ○ [Item 2]                 [meta] │ │
-│ │ ○ [Item 3]                 [meta] │ │
+│ │ ○ [Item 1] [meta] │ │ ← List item
+│ │ ○ [Item 2] [meta] │ │
+│ │ ○ [Item 3] [meta] │ │
 │ └───────────────────────────────────┘ │
-│                                       │
-│ 📁 [SECTION 2] (N)              [▼]   │
+│ │
+│ 📁 [SECTION 2] (N) [▼] │
 │ ┌───────────────────────────────────┐ │
-│ │ ○ [Item 1]                 [meta] │ │
-│ │ ○ [Item 2]                 [meta] │ │
+│ │ ○ [Item 1] [meta] │ │
+│ │ ○ [Item 2] [meta] │ │
 │ └───────────────────────────────────┘ │
-│                                       │
+│ │
 ├───────────────────────────────────────┤
-│    [🏠 Tab1]  [📊 Tab2]  [⚙️ Tab3]    │  ← Navigation
+│ [🏠 Tab1] [📊 Tab2] [⚙️ Tab3] │ ← Navigation
 └───────────────────────────────────────┘
 
 ### Screen: [Modal/Dialog]
 
 ┌────────────────────────────────────┐
-│          [Modal Title]             │
+│ [Modal Title] │
 ├────────────────────────────────────┤
-│                                    │
-│  [Label]:                          │
-│  ┌──────────────────────────────┐  │
-│  │ [Input field]                │  │
-│  └──────────────────────────────┘  │
-│                                    │
-│  [ Primary Action ]                │
-│                                    │
-│  ─────── OR ───────                │
-│                                    │
-│  [ Alternative Action ]            │
-│                                    │
+│ │
+│ [Label]: │
+│ ┌──────────────────────────────┐ │
+│ │ [Input field] │ │
+│ └──────────────────────────────┘ │
+│ │
+│ [ Primary Action ] │
+│ │
+│ ─────── OR ─────── │
+│ │
+│ [ Alternative Action ] │
+│ │
 ├────────────────────────────────────┤
-│              [ Close ]             │
+│ [ Close ] │
 └────────────────────────────────────┘
 ```
 
@@ -167,34 +169,34 @@ Map wireframes to component hierarchy:
 
 [Page]
 ├── Header
-│   ├── BackButton
-│   ├── Title (editable if needed)
-│   └── MenuButton → DropdownMenu
-│       ├── [Action 1]
-│       ├── [Action 2]
-│       └── [Action 3]
+│ ├── BackButton
+│ ├── Title (editable if needed)
+│ └── MenuButton → DropdownMenu
+│ ├── [Action 1]
+│ ├── [Action 2]
+│ └── [Action 3]
 │
 ├── [Primary]Input
-│   ├── SearchInput / TextInput
-│   └── ActionButton
+│ ├── SearchInput / TextInput
+│ └── ActionButton
 │
 ├── ContentArea
-│   └── [Section] (repeated)
-│       ├── SectionHeader
-│       │   ├── Icon
-│       │   ├── Title
-│       │   ├── Count
-│       │   └── CollapseToggle
-│       └── [ItemCard] (repeated)
-│           ├── SelectionControl
-│           ├── Content
-│           ├── Metadata
-│           └── Actions (swipe/hover)
+│ └── [Section] (repeated)
+│ ├── SectionHeader
+│ │ ├── Icon
+│ │ ├── Title
+│ │ ├── Count
+│ │ └── CollapseToggle
+│ └── [ItemCard] (repeated)
+│ ├── SelectionControl
+│ ├── Content
+│ ├── Metadata
+│ └── Actions (swipe/hover)
 │
 └── Navigation
-    ├── NavItem ([Tab 1])
-    ├── NavItem ([Tab 2])
-    └── NavItem ([Tab 3])
+├── NavItem ([Tab 1])
+├── NavItem ([Tab 2])
+└── NavItem ([Tab 3])
 ```
 
 ### 6. Define Interaction Specifications
@@ -205,6 +207,7 @@ Document micro-interactions:
 ## Interaction Specifications
 
 ### [Primary Action] Animation
+
 - **Trigger:** [User action]
 - **Duration:** [X]ms ease-out
 - **Effects:**
@@ -213,6 +216,7 @@ Document micro-interactions:
   3. [Final state]
 
 ### [Secondary Action] Animation
+
 - **Trigger:** [User action]
 - **Duration:** [X]ms ease-in
 - **Effects:**
@@ -220,6 +224,7 @@ Document micro-interactions:
   2. [Feedback indication]
 
 ### [Gesture] Interaction
+
 - **Trigger:** [Gesture type on element]
 - **Threshold:** [X]px to reveal, [Y]px to confirm
 - **Effects:**
@@ -235,18 +240,20 @@ Define layout changes:
 ```markdown
 ## Responsive Design
 
-| Breakpoint | Layout Changes |
-|------------|---------------|
-| Mobile (<640px) | Single column, bottom nav, touch gestures |
-| Tablet (640-1024px) | Two columns, side navigation |
-| Desktop (>1024px) | Multi-pane layout, hover interactions |
+| Breakpoint          | Layout Changes                            |
+| ------------------- | ----------------------------------------- |
+| Mobile (<640px)     | Single column, bottom nav, touch gestures |
+| Tablet (640-1024px) | Two columns, side navigation              |
+| Desktop (>1024px)   | Multi-pane layout, hover interactions     |
 
 ### Mobile Specific
+
 - Full-width content
 - Bottom navigation
 - Touch-optimized controls
 
 ### Desktop Specific
+
 - Hover to reveal actions
 - Keyboard shortcuts
 - Drag-and-drop (if applicable)
@@ -256,29 +263,89 @@ Define layout changes:
 
 Document a11y requirements:
 
-```markdown
+````markdown
 ## Accessibility
 
 ### Keyboard Navigation
+
 - Tab through interactive elements
 - Space/Enter to activate
 - Escape to dismiss dialogs
 - Arrow keys for navigation within groups
 
 ### Screen Reader
+
 - Elements announce: "[type] [name], [state], [context]"
 - Live regions for dynamic updates
 - Meaningful link/button labels
 
 ### Visual
+
 - Minimum contrast: 4.5:1
 - Focus indicators: 2px solid outline
 - Touch targets: minimum 44x44px
 
 ### Motion
+
 - Respect prefers-reduced-motion
 - Alternative: instant state changes
+
+### 9. Visual Design Direction
+
+> ⚠️ **Hard Gate:** The AI must propose visual design options and receive human approval before proceeding to SOP-305 (Page Implementation).
+
+The AI should propose visual design options, **not choose unilaterally**:
+
+```markdown
+## Visual Design Direction
+
+### Color Palette Options
+
+**Option A: {Name}** (e.g., "Warm & Friendly")
+| Role | Color | Usage |
+|------|-------|-------|
+| Primary | {hex} | Buttons, links, active states |
+| Secondary | {hex} | Accents, badges, highlights |
+| Background | {hex} | Page background |
+| Surface | {hex} | Cards, panels |
+| Text | {hex} | Body text |
+| Muted | {hex} | Secondary text, borders |
+| Error | {hex} | Error states |
+| Success | {hex} | Success states |
+
+**Option B: {Name}** (e.g., "Professional & Clean")
+| Role | Color | Usage |
+|------|-------|-------|
+| ... | ... | ... |
+
+**Option C: {Name}** (e.g., "Bold & Modern")
+| Role | Color | Usage |
+|------|-------|-------|
+| ... | ... | ... |
+
+### Typography
+
+| Element   | Font                   | Size    | Weight  |
+| --------- | ---------------------- | ------- | ------- |
+| Headings  | {e.g., Inter}          | 24-32px | 600-700 |
+| Body      | {e.g., Inter}          | 14-16px | 400     |
+| Captions  | {e.g., Inter}          | 12px    | 400     |
+| Mono/Code | {e.g., JetBrains Mono} | 14px    | 400     |
+
+### Visual Mood
+
+- **Style:** {e.g., "Minimal with subtle shadows", "Glassmorphism", "Flat"}
+- **Border radius:** {e.g., "8px (rounded)", "0px (sharp)"}
+- **Spacing:** {e.g., "Comfortable (16px base)", "Compact (8px base)"}
+- **Dark mode:** {Yes/No — if yes, propose dark palette too}
+
+### My Recommendation: Option {X}
+
+**Rationale:** {Why this fits the app's purpose and target audience}
 ```
+````
+
+**After human selects/adjusts:** Record in `/docs/frontend/visual-design.md`
 
 ---
 
@@ -291,6 +358,7 @@ Document a11y requirements:
 - [ ] Interactions specified with timing
 - [ ] Responsive breakpoints documented
 - [ ] Accessibility requirements listed
+- [ ] **Visual design direction approved by developer**
 - [ ] Developer approved design direction
 
 ---
@@ -301,6 +369,7 @@ Document a11y requirements:
 Execute SOP-302 (UI/UX Design):
 
 Read:
+
 - `/docs/requirements.md` for user stories
 - `/docs/frontend/components.md` for existing components
 - `/docs/frontend/theme.md` for design tokens
@@ -308,6 +377,7 @@ Read:
 **Developer input level:** [Minimal/Moderate/Detailed]
 
 **Tasks (for Minimal input):**
+
 1. Analyze user stories for UI implications
 2. Create user flows for key journeys
 3. Design text-based wireframes for each screen
@@ -348,8 +418,11 @@ Please review the proposed UI design and confirm:
 - [ ] Component breakdown is appropriate
 - [ ] Interactions feel right for the app
 - [ ] Accessibility requirements are adequate
+- [ ] **Color palette is approved** (visual-design.md)
+- [ ] **Typography is approved** (visual-design.md)
+- [ ] **Visual mood/style is approved** (visual-design.md)
 
-**Approved:** [ ] Yes  [ ] No (provide feedback)
+**Approved:** [ ] Yes [ ] No (provide feedback)
 ```
 
 ---
