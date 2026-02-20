@@ -233,6 +233,41 @@ These are human-approved and must never be contradicted:
 
 ---
 
+## 📦 Context Cache
+
+> **AI Agent:** After completing each SOP, cache key outputs here so future SOPs
+> don't need to re-read full prerequisite files. Update inline as you progress.
+
+### Cached Decisions
+
+| Decision        | Value                                        | Source                                  | Set By  |
+| --------------- | -------------------------------------------- | --------------------------------------- | ------- |
+| Framework       | {e.g., Next.js 14}                           | `/docs/tech-stack.md`                   | SOP-001 |
+| Database        | {e.g., PostgreSQL}                           | `/docs/tech-stack.md`                   | SOP-001 |
+| ORM             | {e.g., Prisma}                               | `/docs/tech-stack.md`                   | SOP-001 |
+| Auth            | {e.g., Supabase Auth}                        | `/docs/tech-stack.md`                   | SOP-001 |
+| Styling         | {e.g., Tailwind CSS}                         | `/docs/tech-stack.md`                   | SOP-001 |
+| State Mgmt      | {e.g., React Query + Zustand}                | `/docs/tech-stack.md`                   | SOP-001 |
+| Hosting         | {e.g., Vercel}                               | `/docs/tech-stack.md`                   | SOP-001 |
+| Entities        | {e.g., User, List, Item, ...}                | `/docs/requirements.md`                 | SOP-000 |
+| Branching       | {e.g., GitHub Flow}                          | `CONTRIBUTING.md`                       | SOP-002 |
+| Design Patterns | {e.g., Service + Repository, function-based} | `/docs/architecture/design-patterns.md` | SOP-005 |
+
+### Cached File Locations
+
+| Artifact        | Path                                      | Last Updated By |
+| --------------- | ----------------------------------------- | --------------- |
+| Requirements    | `/docs/requirements.md`                   | SOP-000         |
+| Tech Stack      | `/docs/tech-stack.md`                     | SOP-001         |
+| Execution Brief | `/docs/execution-brief.md`                | Phase 0         |
+| Schema / ERD    | {e.g., `prisma/schema.prisma`}            | SOP-101         |
+| API Spec        | {e.g., `/docs/api/openapi.yaml`}          | SOP-202         |
+| Component Docs  | {e.g., `/docs/frontend/components.md`}    | SOP-300         |
+| Visual Design   | {e.g., `/docs/frontend/visual-design.md`} | SOP-302         |
+| Page Manifest   | {e.g., `/docs/frontend/page-manifest.md`} | SOP-305         |
+
+---
+
 ## 🔄 Current Session
 
 ### Active SOP
@@ -331,64 +366,3 @@ Step 3: Run coverage verification.
 
 - {List files created}
   **Notes:** {Any observations, decisions, or deviations}
-
----
-
-## 🔗 Quick Reference
-
-### Directory Structure
-
-```
-{project-root}/
-├── .prompts/
-│   ├── AI-GUIDE.md       # How to use SOPs with AI agents
-│   └── AI-SESSION.md     # This file (active session tracker)
-├── .sops/
-│   ├── README.md         # SOP index
-│   ├── templates/        # Reusable templates
-│   ├── phase-0-initialization/
-│   ├── phase-1-database/
-│   ├── phase-2-backend/
-│   ├── phase-3-frontend/
-│   ├── phase-4-ai-integration/
-│   ├── phase-5-quality/
-│   └── phase-6-deployment/
-├── docs/                 # Generated documentation
-├── src/                  # Source code
-└── ...
-```
-
-### Recommended SOP Order
-
-```
-Phase 0 (Sequential)
-────────────────────
-000 → 001 → 002 → 003 → 004 → 005 → 006
-
-Phase 1-3 (Can parallelize frontend/backend after DB)
-──────────────────────────────────────────────────────
-100 → 101 → 103
-            ↓
-      ┌─────┴─────┐
-      ↓           ↓
-    Phase 2    Phase 3
-    (Backend)  (Frontend)
-      ↓           ↓
-      └─────┬─────┘
-            ↓
-    Phase 4 (Optional)
-            ↓
-    Phase 5 (Quality)
-            ↓
-    Phase 6 (Deploy)
-```
-
----
-
-## ⚠️ Important Notes
-
-1. **AI manages this file** — Human only provides initial project description
-2. **Always read SOPs first** — Don't assume; follow the documented procedure
-3. **Check prerequisites** — Ensure previous SOP outputs exist before starting
-4. **Update after each SOP** — Keep this tracker current
-5. **Document deviations** — Note any departures from SOPs in the session log
